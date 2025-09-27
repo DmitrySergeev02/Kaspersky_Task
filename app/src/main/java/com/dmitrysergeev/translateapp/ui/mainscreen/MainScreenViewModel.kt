@@ -10,6 +10,7 @@ import com.dmitrysergeev.translateapp.utils.InputValidator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -44,31 +45,32 @@ class MainScreenViewModel: ViewModel() {
                 apiTranslationRepository.getTranslations(query)
                     .catch { error->
                         _mainScreenUiState.value = MainScreenUiState(
-                            "",
-                            "Во время запроса произошла ошибка, повторите попытку позже"
+                            snackbarText = "Во время запроса произошла ошибка, повторите попытку позже"
                         )
                         Log.d(TAG, error.message ?: "unknown error")
                     }
                     .collect{ words->
                         if (words.isEmpty()){
                             _mainScreenUiState.value = MainScreenUiState(
-                                "",
-                                "Для введённого слова не найден перевод"
+                                snackbarText ="Для введённого слова не найден перевод"
                             )
                         } else {
                             _mainScreenUiState.value = MainScreenUiState(
-                                words[0].text,
-                                ""
+                                translateResult = words[0].text,
                             )
                         }
                     }
             }
         } else {
-
             _mainScreenUiState.value = MainScreenUiState(
-                "",
-                "Введите одно корректное слово на русском языке"
+                snackbarText = "Введите одно корректное слово на русском языке"
             )
+        }
+    }
+
+    fun changeFavouriteState(isFavourite: Boolean){
+        _mainScreenUiState.update { state->
+            state.copy(isFavourite = isFavourite)
         }
     }
 

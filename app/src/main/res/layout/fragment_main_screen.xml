@@ -38,16 +38,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:padding="10dp"
             >
 
             <TextView
+                android:id="@+id/translate_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:textSize="16sp"
                 android:text="Перевод:"
                 />
@@ -56,12 +58,24 @@
                 android:id="@+id/word_translation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/translate_label"
+                app:layout_constraintStart_toStartOf="parent"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Нога"
                 />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/favourite_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/empty_like_icon"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/word_translation"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

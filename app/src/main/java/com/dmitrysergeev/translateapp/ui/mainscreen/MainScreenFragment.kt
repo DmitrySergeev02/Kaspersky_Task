@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -51,8 +52,15 @@ class MainScreenFragment: Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.mainScreenUiState.collect{ state->
                     binding.wordTranslation.text = state.translateResult
+
                     if (state.snackbarText.isNotBlank()){
                         showSnackBarWithText(state.snackbarText)
+                    }
+
+                    binding.favouriteButton.visibility = if (state.translateResult.isBlank()) View.GONE else View.VISIBLE
+                    binding.favouriteButton.setImageResource(if (state.isFavourite) R.drawable.like_icon else R.drawable.empty_like_icon)
+                    binding.favouriteButton.setOnClickListener {
+                        viewModel.changeFavouriteState(!state.isFavourite)
                     }
                 }
             }
