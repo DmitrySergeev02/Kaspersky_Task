@@ -3,7 +3,7 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.api.ApiTranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.api.SkyEngApi
 import com.dmitrysergeev.translateapp.utils.InputValidator
