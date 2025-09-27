@@ -10,8 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
+import com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview.HistoryAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,8 +52,26 @@ class MainScreenFragment: Fragment() {
             viewModel.translateText(binding.queryInput.text.toString())
         }
 
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = HistoryAdapter(
+            historyItems = emptyList(),
+            onDelete = { historyItem ->
+
+            }
+        )
+        binding.historyRecyclerView.adapter = adapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.historyItemsState.collect{ historyItems->
+                    adapter.updateData(historyItems.reversed())
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+
                 viewModel.mainScreenUiState.collect{ state->
                     binding.wordTranslation.text = state.translateResult
 

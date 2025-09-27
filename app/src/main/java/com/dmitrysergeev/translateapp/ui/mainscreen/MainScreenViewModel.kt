@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,19 @@ class MainScreenViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
-    val mainScreenUiState  = _mainScreenUiState.asStateFlow()
+    val mainScreenUiState = _mainScreenUiState.asStateFlow()
+
+    private val _historyItemsState: MutableStateFlow<List<HistoryDbEntity>> = MutableStateFlow(emptyList())
+    val historyItemsState = _historyItemsState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            translationDbRepository.getHistory()
+                .collect{ historyItems ->
+                    _historyItemsState.value = historyItems
+                }
+        }
+    }
 
     fun translateText(query: String){
         val trimmedString = query.trim()
@@ -42,6 +55,13 @@ class MainScreenViewModel @Inject constructor(
                         } else {
                             _mainScreenUiState.value = MainScreenUiState(
                                 translateResult = words[0].text,
+                            )
+                            translationDbRepository.addHistoryItem(
+                                HistoryDbEntity(
+                                    id = 0,
+                                    baseWord = trimmedString,
+                                    translation = words[0].text
+                                )
                             )
                         }
                     }
