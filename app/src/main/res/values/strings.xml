@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Translate App</string>
+    <string name="translate_item_base_word">Исходное слово: %1$s</string>
+    <string name="translate_item_translation">Перевод: %1$s</string>
 </resources>

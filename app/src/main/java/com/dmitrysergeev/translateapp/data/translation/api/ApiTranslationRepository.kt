@@ -1,11 +1,11 @@
 package com.dmitrysergeev.translateapp.data.translation.api
 
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.api.model.WordApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class ApiTranslationRepository(
+class ApiTranslationRepository @Inject constructor(
     private val skyEngApi: SkyEngApi
 ): TranslationRepository {
     override fun getTranslations(query: String): Flow<List<WordApi>> {
