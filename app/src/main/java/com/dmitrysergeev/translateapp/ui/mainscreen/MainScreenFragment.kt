@@ -56,7 +56,7 @@ class MainScreenFragment: Fragment() {
         val adapter = HistoryAdapter(
             historyItems = emptyList(),
             onDelete = { historyItem ->
-
+                viewModel.deleteItemFromHistory(historyItem)
             }
         )
         binding.historyRecyclerView.adapter = adapter

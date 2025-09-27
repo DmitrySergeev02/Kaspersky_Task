@@ -73,6 +73,12 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    fun deleteItemFromHistory(historyDbEntity: HistoryDbEntity){
+        viewModelScope.launch {
+            translationDbRepository.deleteHistoryItem(historyDbEntity)
+        }
+    }
+
     fun changeFavouriteState(isFavourite: Boolean){
         _mainScreenUiState.update { state->
             state.copy(isFavourite = isFavourite)
