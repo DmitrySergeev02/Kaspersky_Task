@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.dmitrysergeev.translateapp.data.translation.api.ApiTranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.api.SkyEngApi
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -29,14 +31,16 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val skyEngApi = retrofit.create<SkyEngApi>()
+        val apiTranslationRepository = ApiTranslationRepository(skyEngApi)
 
         lifecycleScope.launch {
-            try{
-                val result = skyEngApi.getMeanings("нога")
-                Log.d(TAG, result.toString())
-            } catch (e: Exception) {
-                Log.d(TAG, e.message ?: "error")
-            }
+            apiTranslationRepository.getTranslations("нога")
+                .catch { error->
+                    Log.d(TAG, error.message ?: "Unknown Error")
+                }
+                .collect{ words->
+                    Log.d(TAG, words.toString())
+                }
         }
     }
 

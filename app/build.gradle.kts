@@ -55,4 +55,10 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.15.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+
+    // Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
 }
