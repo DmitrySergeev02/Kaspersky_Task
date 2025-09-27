@@ -1,24 +1,13 @@
 package com.dmitrysergeev.translateapp.data.translation.db
 
-import android.content.Context
-import androidx.room.Room
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-private const val DATABASE_NAME = "translation_database"
-
-class RoomTranslationDbRepository(
-    context: Context
+class RoomTranslationDbRepository @Inject constructor(
+    private val database: TranslateDatabase
 ): TranslationDbRepository {
-
-    private val database: TranslateDatabase = Room
-        .databaseBuilder(
-            context.applicationContext,
-            TranslateDatabase::class.java,
-            DATABASE_NAME
-        )
-        .build()
 
     override fun getFavourites(): Flow<List<FavouriteDbEntity>> = database.favouriteDao().getFavourites()
 

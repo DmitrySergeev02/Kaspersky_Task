@@ -13,8 +13,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainScreenFragment: Fragment() {
 
     private var _binding: FragmentMainScreenBinding? = null

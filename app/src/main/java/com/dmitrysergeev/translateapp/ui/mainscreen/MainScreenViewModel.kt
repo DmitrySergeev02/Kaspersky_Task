@@ -4,45 +4,30 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.api.ApiTranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.api.SkyEngApi
+import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
 import com.dmitrysergeev.translateapp.utils.InputValidator
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
+import javax.inject.Inject
 
-class MainScreenViewModel: ViewModel() {
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
+    private val translationRepository: TranslationRepository,
+    private val translationDbRepository: TranslationDbRepository
+): ViewModel() {
 
-    private val apiTranslationRepository: TranslationRepository
-
-    private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState("",""))
+    private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
     val mainScreenUiState  = _mainScreenUiState.asStateFlow()
-
-    init {
-        val okHttpClient = OkHttpClient.Builder()
-            .build()
-
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://dictionary.skyeng.ru/api/public/v1/")
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-
-        val skyEngApi = retrofit.create<SkyEngApi>()
-        apiTranslationRepository = ApiTranslationRepository(skyEngApi)
-    }
 
     fun translateText(query: String){
         val trimmedString = query.trim()
         if (InputValidator.isCorrect(trimmedString)){
             viewModelScope.launch {
-                apiTranslationRepository.getTranslations(query)
+                translationRepository.getTranslations(query)
                     .catch { error->
                         _mainScreenUiState.value = MainScreenUiState(
                             snackbarText = "Во время запроса произошла ошибка, повторите попытку позже"
