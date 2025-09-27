@@ -5,12 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
+import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +31,8 @@ class MainScreenViewModel @Inject constructor(
 
     private val _historyItemsState: MutableStateFlow<List<HistoryDbEntity>> = MutableStateFlow(emptyList())
     val historyItemsState = _historyItemsState.asStateFlow()
+
+    private var currentInput: String = ""
 
     init {
         viewModelScope.launch {
@@ -53,16 +60,25 @@ class MainScreenViewModel @Inject constructor(
                                 snackbarText ="Для введённого слова не найден перевод"
                             )
                         } else {
-                            _mainScreenUiState.value = MainScreenUiState(
-                                translateResult = words[0].text,
-                            )
-                            translationDbRepository.addHistoryItem(
-                                HistoryDbEntity(
-                                    id = 0,
-                                    baseWord = trimmedString,
+                            currentInput = trimmedString
+                            translationDbRepository
+                                .getFavouriteByBaseWordAndTranslation(
+                                    baseWord = currentInput,
                                     translation = words[0].text
-                                )
-                            )
+                                ).first{ result ->
+                                    _mainScreenUiState.value = MainScreenUiState(
+                                        translateResult = words[0].text,
+                                        isFavourite = result!=null
+                                    )
+                                    translationDbRepository.addHistoryItem(
+                                        HistoryDbEntity(
+                                            id = 0,
+                                            baseWord = trimmedString,
+                                            translation = words[0].text
+                                        )
+                                    )
+                                    return@first true
+                                }
                         }
                     }
             }
@@ -82,6 +98,24 @@ class MainScreenViewModel @Inject constructor(
     fun changeFavouriteState(isFavourite: Boolean){
         _mainScreenUiState.update { state->
             state.copy(isFavourite = isFavourite)
+        }
+        viewModelScope.launch {
+            if (isFavourite){
+                translationDbRepository.addFavourite(
+                    FavouriteDbEntity(
+                        id = 0,
+                        baseWord = currentInput,
+                        translation = _mainScreenUiState.value.translateResult
+                    )
+                )
+            } else {
+                translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
+                    BaseWordAndTranslation(
+                        baseWord = currentInput,
+                        translation = _mainScreenUiState.value.translateResult
+                    )
+                )
+            }
         }
     }
 

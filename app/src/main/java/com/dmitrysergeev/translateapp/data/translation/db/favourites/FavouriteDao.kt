@@ -15,6 +15,11 @@ interface FavouriteDao {
     @Insert
     suspend fun addFavourite(favouriteDbEntity: FavouriteDbEntity)
 
-    @Delete
-    suspend fun deleteFavourite(favouriteDbEntity: FavouriteDbEntity)
+    @Delete(
+        FavouriteDbEntity::class
+    )
+    suspend fun deleteFavouriteByBaseWordAndTranslation(baseWordAndTranslation: BaseWordAndTranslation)
+
+    @Query("SELECT * FROM favourites WHERE baseWord=:baseWord and translation=:translation LIMIT 1")
+    fun getFavouriteByBaseWordAndTranslation(baseWord: String, translation: String): Flow<FavouriteDbEntity?>
 }

@@ -1,5 +1,6 @@
 package com.dmitrysergeev.translateapp.data.translation.db
 
+import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,9 @@ class RoomTranslationDbRepository @Inject constructor(
 
     override suspend fun addFavourite(favouriteDbEntity: FavouriteDbEntity) = database.favouriteDao().addFavourite(favouriteDbEntity)
 
-    override suspend fun deleteFavourite(favouriteDbEntity: FavouriteDbEntity) = database.favouriteDao().deleteFavourite(favouriteDbEntity)
+    override suspend fun deleteFavouriteByBaseWordAndTranslation(baseWordAndTranslation: BaseWordAndTranslation) = database.favouriteDao().deleteFavouriteByBaseWordAndTranslation(baseWordAndTranslation)
+
+    override fun getFavouriteByBaseWordAndTranslation(baseWord: String, translation: String) = database.favouriteDao().getFavouriteByBaseWordAndTranslation(baseWord, translation)
 
     override fun getHistory(): Flow<List<HistoryDbEntity>> = database.historyDao().getHistory()
 

@@ -11,3 +11,8 @@ data class FavouriteDbEntity(
     val baseWord: String,
     val translation: String
 )
+
+data class BaseWordAndTranslation(
+    val baseWord: String,
+    val translation: String
+)

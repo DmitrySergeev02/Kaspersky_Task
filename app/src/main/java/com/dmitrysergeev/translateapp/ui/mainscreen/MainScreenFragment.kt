@@ -64,6 +64,7 @@ class MainScreenFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.historyItemsState.collect{ historyItems->
+                    Log.d("lololol", historyItems.toString())
                     adapter.updateData(historyItems.reversed())
                 }
             }
