@@ -2,15 +2,23 @@ package com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.databinding.TranslateItemBinding
 
 class HistoryAdapter(
-    private var historyItems: List<HistoryDbEntity>,
     private val onDelete: (HistoryDbEntity) -> Unit
 ): RecyclerView.Adapter<HistoryViewHolder>() {
+    var historyItems: List<HistoryDbEntity> = emptyList()
+        set(newValue){
+            val diffCallback = HistoryDiffCallback(oldHistoryItems = field, newHistoryItems = newValue)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            field = newValue
+            diffResult.dispatchUpdatesTo(this)
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TranslateItemBinding.inflate(inflater, parent, false)
@@ -29,10 +37,5 @@ class HistoryAdapter(
                 onDelete(history)
             }
         }
-    }
-
-    fun updateData(newHistoryItems: List<HistoryDbEntity>){
-        historyItems = newHistoryItems
-        notifyDataSetChanged()
     }
 }
