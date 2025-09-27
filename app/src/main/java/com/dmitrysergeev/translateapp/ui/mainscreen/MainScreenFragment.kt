@@ -1,7 +1,6 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +53,6 @@ class MainScreenFragment: Fragment() {
 
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = HistoryAdapter(
-            historyItems = emptyList(),
             onDelete = { historyItem ->
                 viewModel.deleteItemFromHistory(historyItem)
             }
@@ -64,8 +62,7 @@ class MainScreenFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.historyItemsState.collect{ historyItems->
-                    Log.d("lololol", historyItems.toString())
-                    adapter.updateData(historyItems.reversed())
+                    adapter.historyItems = historyItems.reversed()
                 }
             }
         }
