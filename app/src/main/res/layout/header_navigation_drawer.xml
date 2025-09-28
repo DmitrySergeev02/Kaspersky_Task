@@ -14,7 +14,7 @@
         android:layout_marginEnd="24dp"
         android:textAppearance="?attr/textAppearanceHeadlineSmall"
         android:textColor="?attr/colorOnSurface"
-        android:text="Kaspersky" />
+        android:text="@string/navigation_drawer_header" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,6 +25,6 @@
         android:textAppearance="?attr/textAppearanceTitleSmall"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textStyle="italic"
-        android:text="Test app by Dmitry Sergeev" />
+        android:text="@string/navigation_drawer_subheader" />
 
 </LinearLayout>

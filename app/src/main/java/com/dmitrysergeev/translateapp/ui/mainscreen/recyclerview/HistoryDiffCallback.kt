@@ -1,7 +1,6 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 
 class HistoryDiffCallback(

@@ -29,7 +29,7 @@
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/action_icon"
-            tools:text="Исходное слово: нога" />
+            tools:text="@string/base_word_tools_text" />
 
         <TextView
             android:id="@+id/translation_word"
@@ -38,7 +38,7 @@
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/base_word"
-            tools:text="Перевод: leg" />
+            tools:text="@string/translation_word_tools_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

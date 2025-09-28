@@ -1,7 +1,6 @@
 package com.dmitrysergeev.translateapp.ui.favouritesscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
 import com.dmitrysergeev.translateapp.databinding.FragmentFavouritesScreenBinding
 import com.dmitrysergeev.translateapp.ui.favouritesscreen.recyclerview.FavouritesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -46,7 +44,7 @@ class FavouritesScreenFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        baseBinding.appBar.title = "Избранное"
+        baseBinding.appBar.title = getString(R.string.favourites_page_title)
 
         baseBinding.appBar.setNavigationOnClickListener {
             baseBinding.drawerLayout.open()

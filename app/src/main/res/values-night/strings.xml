@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Translate App</string>
     <string name="translate_item_base_word">Исходное слово: %1$s</string>
@@ -5,7 +6,6 @@
     <string name="favourites_page_title">Избранное</string>
     <string name="main_page_title">Переводчик</string>
     <string name="network_error_try_again_later">Во время запроса произошла ошибка, повторите попытку позже</string>
-    <string name="network_error_no_translation">Для введённого слова не найден перевод</string>
     <string name="network_error_not_russian">Введите одно корректное слово на русском языке</string>
     <string name="query_input_hint">Введите слово для перевода</string>
     <string name="translation_label_text">Перевод:</string>
