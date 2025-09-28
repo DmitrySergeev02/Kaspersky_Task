@@ -2,12 +2,14 @@ package com.dmitrysergeev.translateapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.dmitrysergeev.translateapp.data.translation.api.ApiTranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.api.SkyEngApi
-import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.db.RoomTranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.TranslationRepositoryImpl
+import com.dmitrysergeev.translateapp.data.translation.network.ApiNetworkTranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.network.SkyEngApi
+import com.dmitrysergeev.translateapp.data.translation.network.NetworkTranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.db.RoomDbTranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.TranslateDatabase
-import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.db.DbTranslationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -26,15 +28,21 @@ abstract class TranslationBindsModule {
 
     @Binds
     @Singleton
-    abstract fun bindTranslationRepository(
-        apiTranslationRepository: ApiTranslationRepository
-    ): TranslationRepository
+    abstract fun bindNetworkTranslationRepository(
+        apiTranslationRepository: ApiNetworkTranslationRepository
+    ): NetworkTranslationRepository
 
     @Binds
     @Singleton
     abstract fun bindTranslationDbRepository(
-        roomTranslationDbRepository: RoomTranslationDbRepository
-    ): TranslationDbRepository
+        roomTranslationDbRepository: RoomDbTranslationRepository
+    ): DbTranslationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTranslationRepository(
+        translationRepositoryImpl: TranslationRepositoryImpl
+    ): TranslationRepository
 
 }
 

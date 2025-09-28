@@ -89,7 +89,7 @@ class MainScreenFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.historyItemsState.collect{ historyItems->
-                    adapter.historyItems = historyItems.reversed()
+                    adapter.historyItems = historyItems
                 }
             }
         }

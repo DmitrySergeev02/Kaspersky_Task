@@ -3,11 +3,9 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
-import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,23 +18,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val translationRepository: TranslationRepository,
-    private val translationDbRepository: TranslationDbRepository
+    private val translationRepository: TranslationRepository
 ): ViewModel() {
 
     private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
     val mainScreenUiState = _mainScreenUiState.asStateFlow()
 
-    private val _historyItemsState: MutableStateFlow<List<HistoryDbEntity>> = MutableStateFlow(emptyList())
+    private val _historyItemsState: MutableStateFlow<List<WordTranslation>> = MutableStateFlow(emptyList())
     val historyItemsState = _historyItemsState.asStateFlow()
 
     private var currentInput: String = ""
 
     init {
         viewModelScope.launch {
-            translationDbRepository.getHistory()
+            translationRepository.getHistory()
                 .collect{ historyItems ->
-                    _historyItemsState.value = historyItems
+                    _historyItemsState.value = historyItems.reversed()
                 }
         }
     }
@@ -60,22 +57,22 @@ class MainScreenViewModel @Inject constructor(
                         } else {
                             currentInput = trimmedString
                             _mainScreenUiState.value = MainScreenUiState(
-                                translateResult = words[0].text,
+                                translateResult = words[0].translation,
                             )
-                            translationDbRepository
+                            translationRepository
                                 .getFavouriteByBaseWordAndTranslation(
                                     baseWord = currentInput,
-                                    translation = words[0].text
+                                    translation = words[0].translation
                                 )
                                 .catch { error ->
                                     Log.d(TAG, error.message ?: "Unknown Error")
                                 }
                                 .onStart {
-                                    translationDbRepository.addHistoryItem(
-                                        HistoryDbEntity(
+                                    translationRepository.addHistoryItem(
+                                        WordTranslation(
                                             id = 0,
-                                            baseWord = trimmedString,
-                                            translation = words[0].text
+                                            originalWord = trimmedString,
+                                            translation = words[0].translation
                                         )
                                     )
                                 }
@@ -94,9 +91,9 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun deleteItemFromHistory(historyDbEntity: HistoryDbEntity){
+    fun deleteItemFromHistory(wordTranslation: WordTranslation){
         viewModelScope.launch {
-            translationDbRepository.deleteHistoryItem(historyDbEntity)
+            translationRepository.deleteHistoryItem(wordTranslation)
         }
     }
 
@@ -106,15 +103,15 @@ class MainScreenViewModel @Inject constructor(
         }
         viewModelScope.launch {
             if (isFavourite){
-                translationDbRepository.addFavourite(
-                    FavouriteDbEntity(
+                translationRepository.addFavourite(
+                    WordTranslation(
                         id = 0,
-                        baseWord = currentInput,
+                        originalWord = currentInput,
                         translation = _mainScreenUiState.value.translateResult
                     )
                 )
             } else {
-                translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
+                translationRepository.deleteFavouriteByBaseWordAndTranslation(
                     BaseWordAndTranslation(
                         baseWord = currentInput,
                         translation = _mainScreenUiState.value.translateResult

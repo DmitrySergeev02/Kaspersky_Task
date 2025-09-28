@@ -1,11 +1,11 @@
 package com.dmitrysergeev.translateapp.ui.favouritesscreen.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 
 class FavouritesDiffCallback(
-    private val oldFavouritesItems: List<FavouriteDbEntity>,
-    private val newFavouritesItems: List<FavouriteDbEntity>,
+    private val oldFavouritesItems: List<WordTranslation>,
+    private val newFavouritesItems: List<WordTranslation>,
 ): DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldFavouritesItems.size
 

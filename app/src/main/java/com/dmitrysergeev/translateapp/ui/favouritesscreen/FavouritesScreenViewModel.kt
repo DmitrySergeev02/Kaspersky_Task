@@ -3,9 +3,10 @@ package com.dmitrysergeev.translateapp.ui.favouritesscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.db.DbTranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,30 +17,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavouritesScreenViewModel @Inject constructor(
-    private val translationDbRepository: TranslationDbRepository
+    private val translationRepository: TranslationRepository
 ): ViewModel() {
 
-    private val _favouritesItems: MutableStateFlow<List<FavouriteDbEntity>> = MutableStateFlow(emptyList())
-    val favouriteItems: StateFlow<List<FavouriteDbEntity>> = _favouritesItems.asStateFlow()
+    private val _favouritesItems: MutableStateFlow<List<WordTranslation>> = MutableStateFlow(emptyList())
+    val favouriteItems: StateFlow<List<WordTranslation>> = _favouritesItems.asStateFlow()
 
     init {
         viewModelScope.launch {
-            translationDbRepository.getFavourites()
+            translationRepository.getFavourites()
                 .catch { error->
                     Log.d(TAG, error.message ?: "Unknown Error")
                     _favouritesItems.value = emptyList()
                 }
                 .collect { items->
-                    _favouritesItems.value = items
+                    _favouritesItems.value = items.reversed()
                 }
         }
     }
 
-    fun deleteFromFavourites(itemToDelete: FavouriteDbEntity){
+    fun deleteFromFavourites(itemToDelete: WordTranslation){
         viewModelScope.launch {
-            translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
+            translationRepository.deleteFavouriteByBaseWordAndTranslation(
                 BaseWordAndTranslation(
-                    baseWord = itemToDelete.baseWord,
+                    baseWord = itemToDelete.originalWord,
                     translation = itemToDelete.translation
                 )
             )
