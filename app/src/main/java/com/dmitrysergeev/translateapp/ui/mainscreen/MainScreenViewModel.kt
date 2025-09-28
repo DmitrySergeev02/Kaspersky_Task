@@ -13,9 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -61,15 +59,18 @@ class MainScreenViewModel @Inject constructor(
                             )
                         } else {
                             currentInput = trimmedString
+                            _mainScreenUiState.value = MainScreenUiState(
+                                translateResult = words[0].text,
+                            )
                             translationDbRepository
                                 .getFavouriteByBaseWordAndTranslation(
                                     baseWord = currentInput,
                                     translation = words[0].text
-                                ).first{ result ->
-                                    _mainScreenUiState.value = MainScreenUiState(
-                                        translateResult = words[0].text,
-                                        isFavourite = result!=null
-                                    )
+                                )
+                                .catch { error ->
+                                    Log.d(TAG, error.message ?: "Unknown Error")
+                                }
+                                .onStart {
                                     translationDbRepository.addHistoryItem(
                                         HistoryDbEntity(
                                             id = 0,
@@ -77,7 +78,11 @@ class MainScreenViewModel @Inject constructor(
                                             translation = words[0].text
                                         )
                                     )
-                                    return@first true
+                                }
+                                .collect { result->
+                                    _mainScreenUiState.update { oldState->
+                                        oldState.copy(isFavourite = (result!=null))
+                                    }
                                 }
                         }
                     }

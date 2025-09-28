@@ -83,4 +83,8 @@ dependencies {
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+
+    // Navigation Component
+    implementation ("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.9.5")
 }
