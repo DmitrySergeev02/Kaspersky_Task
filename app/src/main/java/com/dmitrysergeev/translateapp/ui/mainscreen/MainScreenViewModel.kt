@@ -3,9 +3,15 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
+import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.addhistoryitemusecase.AddHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase.DeleteHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.gethistoryusecase.GetHistoryUseCase
+import com.dmitrysergeev.translateapp.domain.gettranslationsforqueryusecase.GetTranslationsForQueryUseCase
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +24,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val translationRepository: TranslationRepository
+    private val getHistoryUseCase: GetHistoryUseCase,
+    private val getTranslationsForQueryUseCase: GetTranslationsForQueryUseCase,
+    private val getFavouriteByBaseWordAndTranslationUseCase: GetFavouriteByBaseWordAndTranslationUseCase,
+    private val addHistoryItemUseCase: AddHistoryItemUseCase,
+    private val deleteHistoryItemUseCase: DeleteHistoryItemUseCase,
+    private val addFavouriteWordTranslationUseCase: AddFavouriteWordTranslationUseCase,
+    private val deleteFavouriteByBaseWordAndTranslationUseCase: DeleteFavouriteByBaseWordAndTranslationUseCase
 ): ViewModel() {
 
     private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
@@ -31,7 +43,7 @@ class MainScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            translationRepository.getHistory()
+            getHistoryUseCase()
                 .collect{ historyItems ->
                     _historyItemsState.value = historyItems.reversed()
                 }
@@ -42,7 +54,7 @@ class MainScreenViewModel @Inject constructor(
         val trimmedString = query.trim()
         if (InputValidator.isCorrect(trimmedString)){
             viewModelScope.launch {
-                translationRepository.getTranslations(query)
+                getTranslationsForQueryUseCase(query)
                     .catch { error->
                         _mainScreenUiState.value = MainScreenUiState(
                             snackbarText = "Во время запроса произошла ошибка, повторите попытку позже"
@@ -59,8 +71,7 @@ class MainScreenViewModel @Inject constructor(
                             _mainScreenUiState.value = MainScreenUiState(
                                 translateResult = words[0].translation,
                             )
-                            translationRepository
-                                .getFavouriteByBaseWordAndTranslation(
+                            getFavouriteByBaseWordAndTranslationUseCase(
                                     baseWord = currentInput,
                                     translation = words[0].translation
                                 )
@@ -68,7 +79,7 @@ class MainScreenViewModel @Inject constructor(
                                     Log.d(TAG, error.message ?: "Unknown Error")
                                 }
                                 .onStart {
-                                    translationRepository.addHistoryItem(
+                                    addHistoryItemUseCase(
                                         WordTranslation(
                                             id = 0,
                                             originalWord = trimmedString,
@@ -93,7 +104,7 @@ class MainScreenViewModel @Inject constructor(
 
     fun deleteItemFromHistory(wordTranslation: WordTranslation){
         viewModelScope.launch {
-            translationRepository.deleteHistoryItem(wordTranslation)
+            deleteHistoryItemUseCase(wordTranslation)
         }
     }
 
@@ -103,7 +114,7 @@ class MainScreenViewModel @Inject constructor(
         }
         viewModelScope.launch {
             if (isFavourite){
-                translationRepository.addFavourite(
+                addFavouriteWordTranslationUseCase(
                     WordTranslation(
                         id = 0,
                         originalWord = currentInput,
@@ -111,7 +122,7 @@ class MainScreenViewModel @Inject constructor(
                     )
                 )
             } else {
-                translationRepository.deleteFavouriteByBaseWordAndTranslation(
+                deleteFavouriteByBaseWordAndTranslationUseCase(
                     BaseWordAndTranslation(
                         baseWord = currentInput,
                         translation = _mainScreenUiState.value.translateResult
