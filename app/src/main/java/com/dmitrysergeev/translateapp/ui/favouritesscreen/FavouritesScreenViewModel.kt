@@ -3,6 +3,7 @@ package com.dmitrysergeev.translateapp.ui.favouritesscreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,17 @@ class FavouritesScreenViewModel @Inject constructor(
                 .collect { items->
                     _favouritesItems.value = items
                 }
+        }
+    }
+
+    fun deleteFromFavourites(itemToDelete: FavouriteDbEntity){
+        viewModelScope.launch {
+            translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
+                BaseWordAndTranslation(
+                    baseWord = itemToDelete.baseWord,
+                    translation = itemToDelete.translation
+                )
+            )
         }
     }
 

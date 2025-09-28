@@ -58,8 +58,9 @@ class FavouritesScreenFragment: Fragment() {
 
         binding.favouriteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = FavouritesAdapter({ item ->
-
-        })
+                viewModel.deleteFromFavourites(item)
+            }
+        )
         binding.favouriteRecyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
