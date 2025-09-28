@@ -60,12 +60,12 @@ class MainScreenViewModel @Inject constructor(
                         } else {
                             currentInput = trimmedString
                             _mainScreenUiState.value = MainScreenUiState(
-                                translateResult = words[0].text,
+                                translateResult = words[0].translation,
                             )
                             translationDbRepository
                                 .getFavouriteByBaseWordAndTranslation(
                                     baseWord = currentInput,
-                                    translation = words[0].text
+                                    translation = words[0].translation
                                 )
                                 .catch { error ->
                                     Log.d(TAG, error.message ?: "Unknown Error")
@@ -75,7 +75,7 @@ class MainScreenViewModel @Inject constructor(
                                         HistoryDbEntity(
                                             id = 0,
                                             baseWord = trimmedString,
-                                            translation = words[0].text
+                                            translation = words[0].translation
                                         )
                                     )
                                 }
