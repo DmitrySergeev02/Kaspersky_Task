@@ -1,6 +1,6 @@
-package com.dmitrysergeev.translateapp.data.translation.api
+package com.dmitrysergeev.translateapp.data.translation.network
 
-import com.dmitrysergeev.translateapp.data.translation.api.model.WordTranslationApi
+import com.dmitrysergeev.translateapp.data.translation.network.model.WordTranslationApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 

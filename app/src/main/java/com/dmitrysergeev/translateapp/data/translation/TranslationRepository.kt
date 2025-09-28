@@ -1,12 +1,12 @@
-package com.dmitrysergeev.translateapp.data.translation.db
+package com.dmitrysergeev.translateapp.data.translation
 
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
-import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import kotlinx.coroutines.flow.Flow
 
-interface TranslationDbRepository {
+interface TranslationRepository {
+
+    fun getTranslations(query: String): Flow<List<WordTranslation>>
 
     fun getFavourites(): Flow<List<WordTranslation>>
 

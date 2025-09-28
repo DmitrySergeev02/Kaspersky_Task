@@ -1,4 +1,4 @@
-package com.dmitrysergeev.translateapp.data.translation.api.model
+package com.dmitrysergeev.translateapp.data.translation.network.model
 
 import com.squareup.moshi.JsonClass
 

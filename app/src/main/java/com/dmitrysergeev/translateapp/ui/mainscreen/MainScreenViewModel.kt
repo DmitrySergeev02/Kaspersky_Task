@@ -3,11 +3,8 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitrysergeev.translateapp.data.translation.api.TranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
+import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
-import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val translationRepository: TranslationRepository,
-    private val translationDbRepository: TranslationDbRepository
+    private val translationRepository: TranslationRepository
 ): ViewModel() {
 
     private val _mainScreenUiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(MainScreenUiState())
@@ -35,7 +31,7 @@ class MainScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            translationDbRepository.getHistory()
+            translationRepository.getHistory()
                 .collect{ historyItems ->
                     _historyItemsState.value = historyItems.reversed()
                 }
@@ -63,7 +59,7 @@ class MainScreenViewModel @Inject constructor(
                             _mainScreenUiState.value = MainScreenUiState(
                                 translateResult = words[0].translation,
                             )
-                            translationDbRepository
+                            translationRepository
                                 .getFavouriteByBaseWordAndTranslation(
                                     baseWord = currentInput,
                                     translation = words[0].translation
@@ -72,7 +68,7 @@ class MainScreenViewModel @Inject constructor(
                                     Log.d(TAG, error.message ?: "Unknown Error")
                                 }
                                 .onStart {
-                                    translationDbRepository.addHistoryItem(
+                                    translationRepository.addHistoryItem(
                                         WordTranslation(
                                             id = 0,
                                             originalWord = trimmedString,
@@ -97,7 +93,7 @@ class MainScreenViewModel @Inject constructor(
 
     fun deleteItemFromHistory(wordTranslation: WordTranslation){
         viewModelScope.launch {
-            translationDbRepository.deleteHistoryItem(wordTranslation)
+            translationRepository.deleteHistoryItem(wordTranslation)
         }
     }
 
@@ -107,7 +103,7 @@ class MainScreenViewModel @Inject constructor(
         }
         viewModelScope.launch {
             if (isFavourite){
-                translationDbRepository.addFavourite(
+                translationRepository.addFavourite(
                     WordTranslation(
                         id = 0,
                         originalWord = currentInput,
@@ -115,7 +111,7 @@ class MainScreenViewModel @Inject constructor(
                     )
                 )
             } else {
-                translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
+                translationRepository.deleteFavouriteByBaseWordAndTranslation(
                     BaseWordAndTranslation(
                         baseWord = currentInput,
                         translation = _mainScreenUiState.value.translateResult
