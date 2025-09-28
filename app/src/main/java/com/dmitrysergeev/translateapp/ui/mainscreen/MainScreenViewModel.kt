@@ -3,6 +3,7 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCase
@@ -57,14 +58,14 @@ class MainScreenViewModel @Inject constructor(
                 getTranslationsForQueryUseCase(query)
                     .catch { error->
                         _mainScreenUiState.value = MainScreenUiState(
-                            snackbarText = "Во время запроса произошла ошибка, повторите попытку позже"
+                            snackbarTextId = R.string.network_error_try_again_later
                         )
                         Log.d(TAG, error.message ?: "unknown error")
                     }
                     .collect{ words->
                         if (words.isEmpty()){
                             _mainScreenUiState.value = MainScreenUiState(
-                                snackbarText ="Для введённого слова не найден перевод"
+                                snackbarTextId = R.string.network_error_no_translation
                             )
                         } else {
                             currentInput = trimmedString
@@ -97,7 +98,7 @@ class MainScreenViewModel @Inject constructor(
             }
         } else {
             _mainScreenUiState.value = MainScreenUiState(
-                snackbarText = "Введите одно корректное слово на русском языке"
+                snackbarTextId = R.string.network_error_not_russian
             )
         }
     }

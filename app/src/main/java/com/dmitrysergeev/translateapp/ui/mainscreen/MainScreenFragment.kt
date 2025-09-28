@@ -1,7 +1,6 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,7 @@ class MainScreenFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        baseBinding.appBar.title = "Переводчик"
+        baseBinding.appBar.title = getString(R.string.main_page_title)
 
         binding.searchButton.setOnClickListener {
             viewModel.translateText(binding.queryInput.text.toString())
@@ -100,8 +99,8 @@ class MainScreenFragment: Fragment() {
                 viewModel.mainScreenUiState.collect{ state->
                     binding.wordTranslation.text = state.translateResult
 
-                    if (state.snackbarText.isNotBlank()){
-                        showSnackBarWithText(state.snackbarText)
+                    if (state.snackbarTextId!=-1){
+                        showSnackBarWithText(getString(state.snackbarTextId))
                     }
 
                     binding.favouriteButton.visibility = if (state.translateResult.isBlank()) View.GONE else View.VISIBLE

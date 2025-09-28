@@ -21,7 +21,7 @@
         android:id="@+id/query_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Введите слово для перевода"
+        android:hint="@string/query_input_hint"
         android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/search_button"
@@ -50,7 +50,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:textSize="16sp"
-                android:text="Перевод:"
+                android:text="@string/translation_label_text"
                 />
 
             <TextView
@@ -61,7 +61,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="Нога"
+                tools:text = "@string/word_translation_text_tools"
                 />
 
             <ImageView
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@id/current_translation_item"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="16sp"
-        android:text="История переводов:"
+        android:text="@string/history_label_text"
         />
 
     <androidx.recyclerview.widget.RecyclerView
