@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainScreenFragment">
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.dmitrysergeev.translateapp.ui.mainscreen.MainScreenFragment"
+        android:label="MainScreenFragment" >
+        <action
+            android:id="@+id/to_favourites_screen"
+            app:destination="@id/favouritesScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouritesScreenFragment"
+        android:name="com.dmitrysergeev.translateapp.ui.favouritesscreen.FavouritesScreenFragment"
+        android:label="FavouritesScreenFragment" >
+        <action
+            android:id="@+id/to_main_screen"
+            app:destination="@id/mainScreenFragment" />
+    </fragment>
+</navigation>

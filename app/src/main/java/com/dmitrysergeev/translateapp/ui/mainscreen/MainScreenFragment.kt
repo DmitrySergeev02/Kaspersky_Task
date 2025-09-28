@@ -1,6 +1,7 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
@@ -62,10 +64,17 @@ class MainScreenFragment: Fragment() {
         baseBinding.appBar.setNavigationOnClickListener {
             baseBinding.drawerLayout.open()
         }
-        baseBinding.navigationView.setCheckedItem(R.id.main_page_item)
+
         baseBinding.navigationView.setNavigationItemSelectedListener { menuItem->
-            menuItem.isChecked = true
-            baseBinding.drawerLayout.close()
+            when(menuItem.itemId){
+                R.id.main_page_item -> {  }
+                R.id.favourite_page_item -> {
+                    baseBinding.drawerLayout.close()
+                    findNavController().navigate(
+                        R.id.to_favourites_screen
+                    )
+                }
+            }
             true
         }
 
@@ -105,9 +114,18 @@ class MainScreenFragment: Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        baseBinding.navigationView.setCheckedItem(R.id.main_page_item)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         _baseBinding = null
+    }
+
+    companion object {
+        const val TAG = "MainScreenTag"
     }
 }
