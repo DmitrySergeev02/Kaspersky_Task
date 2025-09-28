@@ -114,6 +114,18 @@ class MainScreenFragment: Fragment() {
         }
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState?.containsKey(QUERY_LAST_INPUT) == true){
+            binding.queryInput.setText(savedInstanceState.getString(QUERY_LAST_INPUT))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(QUERY_LAST_INPUT, binding.queryInput.text.toString())
+    }
+
     override fun onResume() {
         super.onResume()
         baseBinding.navigationView.setCheckedItem(R.id.main_page_item)
@@ -127,5 +139,6 @@ class MainScreenFragment: Fragment() {
 
     companion object {
         const val TAG = "MainScreenTag"
+        const val QUERY_LAST_INPUT = "query_last_input"
     }
 }
