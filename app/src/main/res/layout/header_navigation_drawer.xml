@@ -14,6 +14,17 @@
         android:layout_marginEnd="24dp"
         android:textAppearance="?attr/textAppearanceHeadlineSmall"
         android:textColor="?attr/colorOnSurface"
-        android:text="by Dmitry Sergeev" />
+        android:text="Kaspersky" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textAppearance="?attr/textAppearanceTitleSmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textStyle="italic"
+        android:text="Test app by Dmitry Sergeev" />
 
 </LinearLayout>
