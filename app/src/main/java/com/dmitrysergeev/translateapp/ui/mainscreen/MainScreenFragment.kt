@@ -51,6 +51,16 @@ class MainScreenFragment: Fragment() {
             viewModel.translateText(binding.queryInput.text.toString())
         }
 
+        binding.appBar.setNavigationOnClickListener {
+            binding.drawerLayout.open()
+        }
+        binding.navigationView.setCheckedItem(R.id.main_page_item)
+        binding.navigationView.setNavigationItemSelectedListener { menuItem->
+            menuItem.isChecked = true
+            binding.drawerLayout.close()
+            true
+        }
+
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = HistoryAdapter(
             onDelete = { historyItem ->
