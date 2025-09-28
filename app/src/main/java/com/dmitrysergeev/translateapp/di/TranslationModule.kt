@@ -32,10 +32,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -103,9 +106,17 @@ abstract class TranslationBindsModule {
 
 }
 
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class IoDispatcher
+
 @Module
 @InstallIn(SingletonComponent::class)
 object TranslationProvidesModule {
+
+    @Provides
+    @IoDispatcher
+    fun provideIoDispatcher() : CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @Singleton
