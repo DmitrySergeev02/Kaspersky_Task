@@ -10,6 +10,22 @@ import com.dmitrysergeev.translateapp.data.translation.network.NetworkTranslatio
 import com.dmitrysergeev.translateapp.data.translation.db.RoomDbTranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.TranslateDatabase
 import com.dmitrysergeev.translateapp.data.translation.db.DbTranslationRepository
+import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.addhistoryitemusecase.AddHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.addhistoryitemusecase.AddHistoryItemUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase.DeleteHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase.DeleteHistoryItemUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCase
+import com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.gethistoryusecase.GetHistoryUseCase
+import com.dmitrysergeev.translateapp.domain.gethistoryusecase.GetHistoryUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.gettranslationsforqueryusecase.GetTranslationsForQueryUseCase
+import com.dmitrysergeev.translateapp.domain.gettranslationsforqueryusecase.GetTranslationsForQueryUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -43,6 +59,47 @@ abstract class TranslationBindsModule {
     abstract fun bindTranslationRepository(
         translationRepositoryImpl: TranslationRepositoryImpl
     ): TranslationRepository
+
+    @Binds
+    abstract fun bindGetHistoryUseCase(
+        getHistoryUseCase: GetHistoryUseCaseImpl
+    ): GetHistoryUseCase
+
+    @Binds
+    abstract fun bindAddFavouriteWordTranslationUseCase(
+        addFavouriteWordTranslationUseCase: AddFavouriteWordTranslationUseCaseImpl
+    ): AddFavouriteWordTranslationUseCase
+
+    @Binds
+    abstract fun bindAddHistoryItemUseCase(
+        addHistoryItemUseCase: AddHistoryItemUseCaseImpl
+    ): AddHistoryItemUseCase
+
+    @Binds
+    abstract fun bindDeleteFavouriteByBaseWordAndTranslationUseCase(
+        deleteFavouriteByBaseWordAndTranslationUseCase: DeleteFavouriteByBaseWordAndTranslationUseCaseImpl
+    ): DeleteFavouriteByBaseWordAndTranslationUseCase
+
+    @Binds
+    abstract fun bindDeleteHistoryItemUseCase(
+        deleteHistoryItemUseCase: DeleteHistoryItemUseCaseImpl
+    ): DeleteHistoryItemUseCase
+
+    @Binds
+    abstract fun bindGetFavouriteByBaseWordAndTranslationUseCase(
+        getFavouriteByBaseWordAndTranslationUseCase: GetFavouriteByBaseWordAndTranslationUseCaseImpl
+    ): GetFavouriteByBaseWordAndTranslationUseCase
+
+    @Binds
+    abstract fun bindGetFavouriteTranslationsUseCase(
+        getFavouriteTranslationsUseCase: GetFavouriteTranslationsUseCaseImpl
+    ): GetFavouriteTranslationsUseCase
+
+    @Binds
+    abstract fun bindGetTranslationsForQueryUseCase(
+        getTranslationsForQueryUseCase: GetTranslationsForQueryUseCaseImpl
+    ): GetTranslationsForQueryUseCase
+
 
 }
 
