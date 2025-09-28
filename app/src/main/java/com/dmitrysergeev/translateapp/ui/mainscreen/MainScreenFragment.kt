@@ -53,6 +53,8 @@ class MainScreenFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        baseBinding.appBar.title = "Переводчик"
+
         binding.searchButton.setOnClickListener {
             viewModel.translateText(binding.queryInput.text.toString())
         }
