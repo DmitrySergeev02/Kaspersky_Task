@@ -1,5 +1,6 @@
 package com.dmitrysergeev.translateapp.ui.favouritesscreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
@@ -24,7 +25,10 @@ class FavouritesScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             translationDbRepository.getFavourites()
-                .catch {  }
+                .catch { error->
+                    Log.d(TAG, error.message ?: "Unknown Error")
+                    _favouritesItems.value = emptyList()
+                }
                 .collect { items->
                     _favouritesItems.value = items
                 }
@@ -42,5 +46,7 @@ class FavouritesScreenViewModel @Inject constructor(
         }
     }
 
-
+    companion object{
+        const val TAG = "FavouritesScreenViewModelTag"
+    }
 }
