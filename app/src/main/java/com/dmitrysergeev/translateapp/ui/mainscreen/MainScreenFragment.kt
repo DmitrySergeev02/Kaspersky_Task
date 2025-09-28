@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
+import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
 import com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview.HistoryAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +20,10 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainScreenFragment: Fragment() {
+
+    private var _baseBinding: FragmentBaseBinding? = null
+    private val baseBinding: FragmentBaseBinding
+        get() = checkNotNull(_baseBinding)
 
     private var _binding: FragmentMainScreenBinding? = null
     private val binding: FragmentMainScreenBinding
@@ -31,8 +36,9 @@ class MainScreenFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
-        return binding.root
+        _baseBinding = FragmentBaseBinding.inflate(inflater, container, false)
+        _binding = FragmentMainScreenBinding.inflate(inflater, baseBinding.contentContainer, true)
+        return baseBinding.root
     }
 
     private fun showSnackBarWithText(text: String){
@@ -51,13 +57,13 @@ class MainScreenFragment: Fragment() {
             viewModel.translateText(binding.queryInput.text.toString())
         }
 
-        binding.appBar.setNavigationOnClickListener {
-            binding.drawerLayout.open()
+        baseBinding.appBar.setNavigationOnClickListener {
+            baseBinding.drawerLayout.open()
         }
-        binding.navigationView.setCheckedItem(R.id.main_page_item)
-        binding.navigationView.setNavigationItemSelectedListener { menuItem->
+        baseBinding.navigationView.setCheckedItem(R.id.main_page_item)
+        baseBinding.navigationView.setNavigationItemSelectedListener { menuItem->
             menuItem.isChecked = true
-            binding.drawerLayout.close()
+            baseBinding.drawerLayout.close()
             true
         }
 
@@ -100,5 +106,6 @@ class MainScreenFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _baseBinding = null
     }
 }
