@@ -5,10 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
 import com.dmitrysergeev.translateapp.databinding.FragmentFavouritesScreenBinding
+import com.dmitrysergeev.translateapp.ui.favouritesscreen.recyclerview.FavouritesAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class FavouritesScreenFragment: Fragment() {
 
     private var _baseBinding: FragmentBaseBinding? = null
@@ -18,6 +28,8 @@ class FavouritesScreenFragment: Fragment() {
     private var _binding: FragmentFavouritesScreenBinding? = null
     private val binding: FragmentFavouritesScreenBinding
         get() = checkNotNull(_binding)
+
+    private val viewModel: FavouritesScreenViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +54,20 @@ class FavouritesScreenFragment: Fragment() {
             menuItem.isChecked = true
             baseBinding.drawerLayout.close()
             true
+        }
+
+        binding.favouriteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = FavouritesAdapter({ item ->
+
+        })
+        binding.favouriteRecyclerView.adapter = adapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.favouriteItems.collect{ favouriteItems->
+                    adapter.favouritesItems = favouriteItems
+                }
+            }
         }
     }
 
