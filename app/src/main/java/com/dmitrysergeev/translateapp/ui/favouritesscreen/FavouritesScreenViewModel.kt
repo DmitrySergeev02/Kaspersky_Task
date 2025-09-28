@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitrysergeev.translateapp.data.translation.db.TranslationDbRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,8 +19,8 @@ class FavouritesScreenViewModel @Inject constructor(
     private val translationDbRepository: TranslationDbRepository
 ): ViewModel() {
 
-    private val _favouritesItems: MutableStateFlow<List<FavouriteDbEntity>> = MutableStateFlow(emptyList())
-    val favouriteItems: StateFlow<List<FavouriteDbEntity>> = _favouritesItems.asStateFlow()
+    private val _favouritesItems: MutableStateFlow<List<WordTranslation>> = MutableStateFlow(emptyList())
+    val favouriteItems: StateFlow<List<WordTranslation>> = _favouritesItems.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -30,16 +30,16 @@ class FavouritesScreenViewModel @Inject constructor(
                     _favouritesItems.value = emptyList()
                 }
                 .collect { items->
-                    _favouritesItems.value = items
+                    _favouritesItems.value = items.reversed()
                 }
         }
     }
 
-    fun deleteFromFavourites(itemToDelete: FavouriteDbEntity){
+    fun deleteFromFavourites(itemToDelete: WordTranslation){
         viewModelScope.launch {
             translationDbRepository.deleteFavouriteByBaseWordAndTranslation(
                 BaseWordAndTranslation(
-                    baseWord = itemToDelete.baseWord,
+                    baseWord = itemToDelete.originalWord,
                     translation = itemToDelete.translation
                 )
             )

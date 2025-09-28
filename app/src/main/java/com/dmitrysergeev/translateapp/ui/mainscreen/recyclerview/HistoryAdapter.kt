@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.databinding.TranslateItemBinding
 
 class HistoryAdapter(
-    private val onDelete: (HistoryDbEntity) -> Unit
+    private val onDelete: (WordTranslation) -> Unit
 ): RecyclerView.Adapter<HistoryViewHolder>() {
-    var historyItems: List<HistoryDbEntity> = emptyList()
+    var historyItems: List<WordTranslation> = emptyList()
         set(newValue){
             val diffCallback = HistoryDiffCallback(oldHistoryItems = field, newHistoryItems = newValue)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -31,7 +32,7 @@ class HistoryAdapter(
         val history = historyItems[position]
         val resources = holder.itemView.resources
         holder.apply {
-            binding.baseWord.text = resources.getString(R.string.translate_item_base_word, history.baseWord)
+            binding.baseWord.text = resources.getString(R.string.translate_item_base_word, history.originalWord)
             binding.translationWord.text = resources.getString(R.string.translate_item_translation, history.translation)
             binding.actionIcon.setOnClickListener {
                 onDelete(history)

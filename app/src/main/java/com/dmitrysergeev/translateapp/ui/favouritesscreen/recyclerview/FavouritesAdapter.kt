@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
+import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.databinding.TranslateItemBinding
 
 class FavouritesAdapter(
-    private val onClick: (FavouriteDbEntity)->Unit
+    private val onClick: (WordTranslation)->Unit
 ): RecyclerView.Adapter<FavouritesViewHolder>() {
 
-    var favouritesItems: List<FavouriteDbEntity> = emptyList()
+    var favouritesItems: List<WordTranslation> = emptyList()
         set(newValue) {
             val diffCallback = FavouritesDiffCallback(
                 oldFavouritesItems = field,
