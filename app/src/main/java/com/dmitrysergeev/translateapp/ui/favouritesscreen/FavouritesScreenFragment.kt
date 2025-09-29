@@ -14,16 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
 import com.dmitrysergeev.translateapp.databinding.FragmentFavouritesScreenBinding
+import com.dmitrysergeev.translateapp.ui.base.BaseFragment
 import com.dmitrysergeev.translateapp.ui.favouritesscreen.recyclerview.FavouritesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavouritesScreenFragment: Fragment() {
-
-    private var _baseBinding: FragmentBaseBinding? = null
-    private val baseBinding: FragmentBaseBinding
-        get() = checkNotNull(_baseBinding)
+class FavouritesScreenFragment: BaseFragment() {
 
     private var _binding: FragmentFavouritesScreenBinding? = null
     private val binding: FragmentFavouritesScreenBinding
@@ -36,9 +33,9 @@ class FavouritesScreenFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _baseBinding = FragmentBaseBinding.inflate(inflater, container, false)
-        _binding = FragmentFavouritesScreenBinding.inflate(inflater, baseBinding.contentContainer, true)
-        return baseBinding.root
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        _binding = FragmentFavouritesScreenBinding.inflate(inflater, root.findViewById(R.id.content_container), true)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,7 +80,6 @@ class FavouritesScreenFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _baseBinding = null
         _binding = null
     }
 
