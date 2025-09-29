@@ -15,6 +15,7 @@ import com.dmitrysergeev.translateapp.domain.usecases.gethistoryusecase.GetHisto
 import com.dmitrysergeev.translateapp.domain.usecases.gettranslationsforqueryusecase.GetTranslationsForQueryUseCase
 import com.dmitrysergeev.translateapp.utils.InputValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -51,11 +52,14 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+    private var checkFavouriteJob: Job? = null
+
     fun translateText(query: String){
+        checkFavouriteJob?.cancel()
         val trimmedString = query.trim()
         if (InputValidator.isCorrect(trimmedString)){
-            viewModelScope.launch {
-                getTranslationsForQueryUseCase(query)
+            checkFavouriteJob = viewModelScope.launch {
+                getTranslationsForQueryUseCase(trimmedString)
                     .onStart {
                         _mainScreenUiState.update { oldState->
                             oldState.copy(
