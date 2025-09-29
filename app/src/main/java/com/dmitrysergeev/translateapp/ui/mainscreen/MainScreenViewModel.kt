@@ -126,9 +126,6 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun changeFavouriteState(isFavourite: Boolean){
-        _mainScreenUiState.update { state->
-            state.copy(isFavourite = isFavourite)
-        }
         viewModelScope.launch {
             if (isFavourite){
                 addFavouriteWordTranslationUseCase(
