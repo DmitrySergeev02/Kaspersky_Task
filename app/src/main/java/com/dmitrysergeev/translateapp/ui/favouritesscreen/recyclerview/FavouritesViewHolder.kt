@@ -3,7 +3,6 @@ package com.dmitrysergeev.translateapp.ui.favouritesscreen.recyclerview
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitrysergeev.translateapp.R
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.databinding.TranslateItemBinding
 
