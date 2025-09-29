@@ -1,10 +1,13 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,19 +15,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
-import com.dmitrysergeev.translateapp.databinding.FragmentBaseBinding
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
+import com.dmitrysergeev.translateapp.ui.base.BaseFragment
 import com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview.HistoryAdapter
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainScreenFragment: Fragment() {
-
-    private var _baseBinding: FragmentBaseBinding? = null
-    private val baseBinding: FragmentBaseBinding
-        get() = checkNotNull(_baseBinding)
+class MainScreenFragment: BaseFragment() {
 
     private var _binding: FragmentMainScreenBinding? = null
     private val binding: FragmentMainScreenBinding
@@ -37,18 +35,9 @@ class MainScreenFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _baseBinding = FragmentBaseBinding.inflate(inflater, container, false)
-        _binding = FragmentMainScreenBinding.inflate(inflater, baseBinding.contentContainer, true)
-        return baseBinding.root
-    }
-
-    private fun showSnackBarWithText(text: String){
-        Snackbar.make(
-            binding.mainScreenLayout,
-            text,
-            Snackbar.LENGTH_LONG
-        )
-            .show()
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        _binding = FragmentMainScreenBinding.inflate(inflater, root.findViewById(R.id.content_container), true)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,8 +45,9 @@ class MainScreenFragment: Fragment() {
 
         baseBinding.appBar.title = getString(R.string.main_page_title)
 
-        binding.searchButton.setOnClickListener {
+        binding.textInputLayout.setEndIconOnClickListener {
             viewModel.translateText(binding.queryInput.text.toString())
+            hideKeyboard(binding.queryInput)
         }
 
         baseBinding.appBar.setNavigationOnClickListener {
@@ -75,6 +65,17 @@ class MainScreenFragment: Fragment() {
                 }
             }
             true
+        }
+
+        binding.queryInput.setOnEditorActionListener { textView, i, _ ->
+            when(i){
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    viewModel.translateText(binding.queryInput.text.toString())
+                    hideKeyboard(binding.queryInput)
+                    true
+                }
+                else -> false
+            }
         }
 
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -103,7 +104,9 @@ class MainScreenFragment: Fragment() {
                         showSnackBarWithText(getString(state.snackbarTextId))
                     }
 
-                    binding.favouriteButton.visibility = if (state.translateResult.isBlank()) View.GONE else View.VISIBLE
+                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+
+                    binding.currentTranslationItem.visibility = if (state.translateResult.isBlank() || state.isLoading) View.GONE else View.VISIBLE
                     binding.favouriteButton.setImageResource(if (state.isFavourite) R.drawable.like_icon else R.drawable.empty_like_icon)
                     binding.favouriteButton.setOnClickListener {
                         viewModel.changeFavouriteState(!state.isFavourite)
@@ -111,6 +114,11 @@ class MainScreenFragment: Fragment() {
                 }
             }
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -133,7 +141,6 @@ class MainScreenFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        _baseBinding = null
     }
 
     companion object {

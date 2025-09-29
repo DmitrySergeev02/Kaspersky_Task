@@ -5,8 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dmitrysergeev.translateapp.data.translation.db.TranslateDatabase
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDao
-import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDao
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
 import kotlinx.coroutines.flow.first
