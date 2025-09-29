@@ -78,6 +78,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/empty_like_icon"
+                app:tint="@color/red"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/word_translation"
@@ -92,6 +93,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/current_translation_item"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
         android:textSize="16sp"
         android:text="@string/history_label_text"
         />
