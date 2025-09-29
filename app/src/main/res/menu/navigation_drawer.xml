@@ -4,11 +4,11 @@
     <item
         android:id="@+id/main_page_item"
         android:icon="@drawable/home_icon"
-        android:title="Главная страница"
+        android:title="@string/main_page"
         android:checkable="true"/>
     <item
         android:id="@+id/favourite_page_item"
         android:icon="@drawable/like_icon"
-        android:title="Избранное"
+        android:title="@string/favourite_page"
         android:checkable="true"/>
 </menu>

@@ -17,4 +17,6 @@
     <string name="word_translation_text_tools">Нога</string>
     <string name="check_favourites_error">Произошла ошибка с хранилищем избранных слов</string>
     <string name="empty_favourites">Список избранных переводов пуст</string>
+    <string name="main_page">Главная страница</string>
+    <string name="favourite_page">Избранное</string>
 </resources>
