@@ -1,9 +1,13 @@
 package com.dmitrysergeev.translateapp.ui.mainscreen
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -77,6 +81,17 @@ class MainScreenFragment: Fragment() {
             true
         }
 
+        binding.queryInput.setOnEditorActionListener { textView, i, _ ->
+            when(i){
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    viewModel.translateText(binding.queryInput.text.toString())
+                    hideKeyboard(binding.queryInput)
+                    true
+                }
+                else -> false
+            }
+        }
+
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = HistoryAdapter(
             onDelete = { historyItem ->
@@ -111,6 +126,11 @@ class MainScreenFragment: Fragment() {
                 }
             }
         }
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
