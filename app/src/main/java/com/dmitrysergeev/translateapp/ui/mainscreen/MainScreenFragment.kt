@@ -60,8 +60,9 @@ class MainScreenFragment: Fragment() {
 
         baseBinding.appBar.title = getString(R.string.main_page_title)
 
-        binding.searchButton.setOnClickListener {
+        binding.textInputLayout.setEndIconOnClickListener {
             viewModel.translateText(binding.queryInput.text.toString())
+            hideKeyboard(binding.queryInput)
         }
 
         baseBinding.appBar.setNavigationOnClickListener {
