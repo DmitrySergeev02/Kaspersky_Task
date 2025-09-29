@@ -53,6 +53,7 @@ class FavouritesScreenFragment: Fragment() {
         baseBinding.navigationView.setNavigationItemSelectedListener { menuItem->
             when(menuItem.itemId){
                 R.id.main_page_item -> {
+                    baseBinding.drawerLayout.close()
                     findNavController().popBackStack()
                 }
                 R.id.favourite_page_item -> { }

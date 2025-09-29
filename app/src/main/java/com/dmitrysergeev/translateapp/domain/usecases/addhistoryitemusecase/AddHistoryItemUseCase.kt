@@ -1,8 +1,8 @@
-package com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase
+package com.dmitrysergeev.translateapp.domain.usecases.addhistoryitemusecase
 
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 
-interface DeleteHistoryItemUseCase {
+interface AddHistoryItemUseCase {
 
     suspend operator fun invoke(worldTranslation: WordTranslation)
 

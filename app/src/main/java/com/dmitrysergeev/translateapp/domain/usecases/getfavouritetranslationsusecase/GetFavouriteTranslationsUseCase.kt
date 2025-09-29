@@ -1,4 +1,4 @@
-package com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase
+package com.dmitrysergeev.translateapp.domain.usecases.getfavouritetranslationsusecase
 
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import kotlinx.coroutines.flow.Flow

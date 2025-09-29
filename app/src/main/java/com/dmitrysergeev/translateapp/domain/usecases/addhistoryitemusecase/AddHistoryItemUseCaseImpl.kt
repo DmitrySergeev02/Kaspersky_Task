@@ -1,6 +1,6 @@
-package com.dmitrysergeev.translateapp.domain.addhistoryitemusecase
+package com.dmitrysergeev.translateapp.domain.usecases.addhistoryitemusecase
 
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.domain.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher

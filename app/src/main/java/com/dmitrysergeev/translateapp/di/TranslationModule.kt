@@ -2,30 +2,30 @@ package com.dmitrysergeev.translateapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepositoryImpl
-import com.dmitrysergeev.translateapp.data.translation.network.ApiNetworkTranslationRepository
+import com.dmitrysergeev.translateapp.domain.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.network.RetrofitTranslationDataSource
 import com.dmitrysergeev.translateapp.data.translation.network.SkyEngApi
-import com.dmitrysergeev.translateapp.data.translation.network.NetworkTranslationRepository
-import com.dmitrysergeev.translateapp.data.translation.db.RoomDbTranslationRepository
+import com.dmitrysergeev.translateapp.data.translation.db.RoomHistoryAndFavouritesDataSource
 import com.dmitrysergeev.translateapp.data.translation.db.TranslateDatabase
-import com.dmitrysergeev.translateapp.data.translation.db.DbTranslationRepository
-import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCase
-import com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.addhistoryitemusecase.AddHistoryItemUseCase
-import com.dmitrysergeev.translateapp.domain.addhistoryitemusecase.AddHistoryItemUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCase
-import com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase.DeleteHistoryItemUseCase
-import com.dmitrysergeev.translateapp.domain.deletehistoryitemusecase.DeleteHistoryItemUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCase
-import com.dmitrysergeev.translateapp.domain.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCase
-import com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.gethistoryusecase.GetHistoryUseCase
-import com.dmitrysergeev.translateapp.domain.gethistoryusecase.GetHistoryUseCaseImpl
-import com.dmitrysergeev.translateapp.domain.gettranslationsforqueryusecase.GetTranslationsForQueryUseCase
-import com.dmitrysergeev.translateapp.domain.gettranslationsforqueryusecase.GetTranslationsForQueryUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.translation.FavouritesDataSource
+import com.dmitrysergeev.translateapp.domain.translation.HistoryDataSource
+import com.dmitrysergeev.translateapp.domain.translation.TranslationDataSource
+import com.dmitrysergeev.translateapp.domain.usecases.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.addfavouritewordtranslationusecase.AddFavouriteWordTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.gethistoryusecase.GetHistoryUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.gethistoryusecase.GetHistoryUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.addhistoryitemusecase.AddHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.addhistoryitemusecase.AddHistoryItemUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.deletefavouritebybasewordandtranslationusecase.DeleteFavouriteByBaseWordAndTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.deletehistoryitemusecase.DeleteHistoryItemUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.deletehistoryitemusecase.DeleteHistoryItemUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.getfavouritebybasewordandtranslationusecase.GetFavouriteByBaseWordAndTranslationUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.getfavouritetranslationsusecase.GetFavouriteTranslationsUseCaseImpl
+import com.dmitrysergeev.translateapp.domain.usecases.gettranslationsforqueryusecase.GetTranslationsForQueryUseCase
+import com.dmitrysergeev.translateapp.domain.usecases.gettranslationsforqueryusecase.GetTranslationsForQueryUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -47,21 +47,21 @@ abstract class TranslationBindsModule {
 
     @Binds
     @Singleton
-    abstract fun bindNetworkTranslationRepository(
-        apiTranslationRepository: ApiNetworkTranslationRepository
-    ): NetworkTranslationRepository
+    abstract fun bindsTranslationDataSource(
+        retrofitTranslationDataSource: RetrofitTranslationDataSource
+    ): TranslationDataSource
 
     @Binds
     @Singleton
-    abstract fun bindTranslationDbRepository(
-        roomTranslationDbRepository: RoomDbTranslationRepository
-    ): DbTranslationRepository
+    abstract fun bindHistoryDataSource(
+        roomHistoryAndFavouritesDataSource: RoomHistoryAndFavouritesDataSource
+    ): HistoryDataSource
 
     @Binds
     @Singleton
-    abstract fun bindTranslationRepository(
-        translationRepositoryImpl: TranslationRepositoryImpl
-    ): TranslationRepository
+    abstract fun bindFavouritesDataSource(
+        roomHistoryAndFavouritesDataSource: RoomHistoryAndFavouritesDataSource
+    ): FavouritesDataSource
 
     @Binds
     abstract fun bindGetHistoryUseCase(
@@ -145,6 +145,20 @@ object TranslationProvidesModule {
                 DATABASE_NAME
             )
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun bindTranslationRepository(
+        translationDataSource: TranslationDataSource,
+        historyDataSource: HistoryDataSource,
+        favouritesDataSource: FavouritesDataSource
+    ): TranslationRepository {
+        return TranslationRepository(
+            translationDataSource,
+            historyDataSource,
+            favouritesDataSource
+        )
     }
 
 }

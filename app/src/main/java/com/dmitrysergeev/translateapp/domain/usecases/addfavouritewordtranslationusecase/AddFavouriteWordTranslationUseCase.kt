@@ -1,4 +1,4 @@
-package com.dmitrysergeev.translateapp.domain.addfavouritewordtranslationusecase
+package com.dmitrysergeev.translateapp.domain.usecases.addfavouritewordtranslationusecase
 
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 

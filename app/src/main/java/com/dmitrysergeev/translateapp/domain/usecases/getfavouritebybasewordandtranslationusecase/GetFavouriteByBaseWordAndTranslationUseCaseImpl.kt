@@ -1,6 +1,6 @@
-package com.dmitrysergeev.translateapp.domain.getfavouritetranslationsusecase
+package com.dmitrysergeev.translateapp.domain.usecases.getfavouritebybasewordandtranslationusecase
 
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.domain.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
 import com.dmitrysergeev.translateapp.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetFavouriteTranslationsUseCaseImpl @Inject constructor(
+class GetFavouriteByBaseWordAndTranslationUseCaseImpl @Inject constructor(
     private val translationRepository: TranslationRepository,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-): GetFavouriteTranslationsUseCase {
+): GetFavouriteByBaseWordAndTranslationUseCase {
 
-    override operator fun invoke(): Flow<List<WordTranslation>> {
+    override operator fun invoke(baseWord: String, translation: String): Flow<WordTranslation?> {
         return translationRepository
-            .getFavourites()
+            .getFavouriteByBaseWordAndTranslation(baseWord,translation)
             .flowOn(dispatcher)
     }
 

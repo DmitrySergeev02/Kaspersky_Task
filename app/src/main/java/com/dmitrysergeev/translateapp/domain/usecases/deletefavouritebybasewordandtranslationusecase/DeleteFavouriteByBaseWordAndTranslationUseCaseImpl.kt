@@ -1,6 +1,6 @@
-package com.dmitrysergeev.translateapp.domain.deletefavouritebybasewordandtranslationusecase
+package com.dmitrysergeev.translateapp.domain.usecases.deletefavouritebybasewordandtranslationusecase
 
-import com.dmitrysergeev.translateapp.data.translation.TranslationRepository
+import com.dmitrysergeev.translateapp.domain.translation.TranslationRepository
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher

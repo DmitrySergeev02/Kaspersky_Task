@@ -68,6 +68,7 @@ class MainScreenFragment: Fragment() {
             when(menuItem.itemId){
                 R.id.main_page_item -> {  }
                 R.id.favourite_page_item -> {
+                    baseBinding.drawerLayout.close()
                     findNavController().navigate(
                         R.id.to_favourites_screen
                     )

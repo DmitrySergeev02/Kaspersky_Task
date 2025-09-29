@@ -1,13 +1,14 @@
 package com.dmitrysergeev.translateapp.data.translation.network
 
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
+import com.dmitrysergeev.translateapp.domain.translation.TranslationDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ApiNetworkTranslationRepository @Inject constructor(
+class RetrofitTranslationDataSource @Inject constructor(
     private val skyEngApi: SkyEngApi
-): NetworkTranslationRepository {
+): TranslationDataSource {
     override fun getTranslations(query: String): Flow<List<WordTranslation>> {
         return flow {
             emit(

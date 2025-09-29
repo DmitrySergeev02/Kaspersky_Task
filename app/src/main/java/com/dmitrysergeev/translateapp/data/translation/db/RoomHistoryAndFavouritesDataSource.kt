@@ -2,13 +2,15 @@ package com.dmitrysergeev.translateapp.data.translation.db
 
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.BaseWordAndTranslation
 import com.dmitrysergeev.translateapp.data.translation.entities.WordTranslation
+import com.dmitrysergeev.translateapp.domain.translation.FavouritesDataSource
+import com.dmitrysergeev.translateapp.domain.translation.HistoryDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class RoomDbTranslationRepository @Inject constructor(
+class RoomHistoryAndFavouritesDataSource @Inject constructor(
     private val database: TranslateDatabase
-): DbTranslationRepository {
+): HistoryDataSource, FavouritesDataSource {
 
     override fun getFavourites(): Flow<List<WordTranslation>> = database.favouriteDao()
         .getFavourites()
