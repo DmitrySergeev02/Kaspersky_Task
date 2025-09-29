@@ -71,6 +71,18 @@ class FavouritesScreenFragment: BaseFragment() {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.uiState.collect{ state->
+                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                    binding.favouriteRecyclerView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+                    if (state.snackbarTextId!=-1){
+                        showSnackBarWithText(getString(state.snackbarTextId))
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
