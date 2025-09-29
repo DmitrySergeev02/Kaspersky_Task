@@ -16,8 +16,5 @@
         android:id="@+id/favouritesScreenFragment"
         android:name="com.dmitrysergeev.translateapp.ui.favouritesscreen.FavouritesScreenFragment"
         android:label="FavouritesScreenFragment" >
-        <action
-            android:id="@+id/to_main_screen"
-            app:destination="@id/mainScreenFragment" />
     </fragment>
 </navigation>
