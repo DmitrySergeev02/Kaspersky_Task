@@ -35,63 +35,77 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/current_translation_item"
+    <FrameLayout
+        android:id="@+id/current_translation_item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="20dp"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/current_translation_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
             >
 
-            <TextView
-                android:id="@+id/translate_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textSize="16sp"
-                android:text="@string/translation_label_text"
-                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                >
 
-            <TextView
-                android:id="@+id/word_translation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/translate_label"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text = "@string/word_translation_text_tools"
-                />
+                <TextView
+                    android:id="@+id/translate_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="16sp"
+                    android:text="@string/translation_label_text"
+                    />
 
-            <ImageView
-                android:id="@+id/favourite_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/empty_like_icon"
-                app:tint="@color/red"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/word_translation"
-                />
+                <TextView
+                    android:id="@+id/word_translation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/translate_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text = "@string/word_translation_text_tools"
+                    />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/favourite_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/empty_like_icon"
+                    app:tint="@color/red"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/word_translation"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/history_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/current_translation_item"
+        app:layout_constraintTop_toBottomOf="@id/current_translation_item_container"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:textSize="16sp"

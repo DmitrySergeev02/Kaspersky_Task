@@ -56,6 +56,14 @@ class MainScreenViewModel @Inject constructor(
         if (InputValidator.isCorrect(trimmedString)){
             viewModelScope.launch {
                 getTranslationsForQueryUseCase(query)
+                    .onStart {
+                        _mainScreenUiState.update { oldState->
+                            oldState.copy(
+                                isLoading = true,
+                                snackbarTextId = -1
+                            )
+                        }
+                    }
                     .catch { error->
                         _mainScreenUiState.value = MainScreenUiState(
                             snackbarTextId = R.string.network_error_try_again_later
@@ -65,12 +73,14 @@ class MainScreenViewModel @Inject constructor(
                     .collect{ words->
                         if (words.isEmpty()){
                             _mainScreenUiState.value = MainScreenUiState(
-                                snackbarTextId = R.string.network_error_no_translation
+                                snackbarTextId = R.string.network_error_no_translation,
+                                isLoading = false
                             )
                         } else {
                             currentInput = trimmedString
                             _mainScreenUiState.value = MainScreenUiState(
                                 translateResult = words[0].translation,
+                                isLoading = false
                             )
                             getFavouriteByBaseWordAndTranslationUseCase(
                                     baseWord = currentInput,
@@ -78,6 +88,12 @@ class MainScreenViewModel @Inject constructor(
                                 )
                                 .catch { error ->
                                     Log.d(TAG, error.message ?: "Unknown Error")
+                                    _mainScreenUiState.update { oldState->
+                                        oldState.copy(
+                                            snackbarTextId = R.string.check_favourites_error,
+                                            isFavourite = false
+                                        )
+                                    }
                                 }
                                 .onStart {
                                     addHistoryItemUseCase(

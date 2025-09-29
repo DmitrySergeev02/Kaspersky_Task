@@ -119,7 +119,9 @@ class MainScreenFragment: Fragment() {
                         showSnackBarWithText(getString(state.snackbarTextId))
                     }
 
-                    binding.favouriteButton.visibility = if (state.translateResult.isBlank()) View.GONE else View.VISIBLE
+                    binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+
+                    binding.currentTranslationItem.visibility = if (state.translateResult.isBlank() || state.isLoading) View.GONE else View.VISIBLE
                     binding.favouriteButton.setImageResource(if (state.isFavourite) R.drawable.like_icon else R.drawable.empty_like_icon)
                     binding.favouriteButton.setOnClickListener {
                         viewModel.changeFavouriteState(!state.isFavourite)
