@@ -61,7 +61,7 @@ class FavouritesScreenViewModel @Inject constructor(
         viewModelScope.launch {
             deleteFavouriteByBaseWordAndTranslationUseCase(
                 BaseWordAndTranslation(
-                    baseWord = itemToDelete.originalWord,
+                    baseWord = itemToDelete.originalWord.lowercase(),
                     translation = itemToDelete.translation
                 )
             )

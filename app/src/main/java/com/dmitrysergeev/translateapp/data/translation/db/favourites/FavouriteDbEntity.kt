@@ -16,7 +16,7 @@ data class FavouriteDbEntity(
     fun toWordTranslation(): WordTranslation{
         return WordTranslation(
             id = this.id,
-            originalWord = this.baseWord,
+            originalWord = this.baseWord.replaceFirstChar { it.uppercaseChar() },
             translation = this.translation
         )
     }

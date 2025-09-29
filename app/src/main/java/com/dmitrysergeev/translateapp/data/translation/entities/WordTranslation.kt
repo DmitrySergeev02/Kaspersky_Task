@@ -12,7 +12,7 @@ data class WordTranslation(
     fun toFavouriteDbEntity(): FavouriteDbEntity{
         return FavouriteDbEntity(
             id = this.id,
-            baseWord = this.originalWord,
+            baseWord = this.originalWord.lowercase(),
             translation = this.translation
         )
     }

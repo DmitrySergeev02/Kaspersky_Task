@@ -22,7 +22,7 @@ class RoomHistoryAndFavouritesDataSource @Inject constructor(
     override suspend fun deleteFavouriteByBaseWordAndTranslation(baseWordAndTranslation: BaseWordAndTranslation) = database.favouriteDao().deleteFavouriteByBaseWordAndTranslation(baseWordAndTranslation)
 
     override fun getFavouriteByBaseWordAndTranslation(baseWord: String, translation: String) = database.favouriteDao()
-        .getFavouriteByBaseWordAndTranslation(baseWord, translation)
+        .getFavouriteByBaseWordAndTranslation(baseWord.lowercase(), translation)
         .map { it?.toWordTranslation() }
 
     override fun getHistory(): Flow<List<WordTranslation>> = database.historyDao()

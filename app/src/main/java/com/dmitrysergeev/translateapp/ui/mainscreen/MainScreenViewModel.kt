@@ -141,7 +141,7 @@ class MainScreenViewModel @Inject constructor(
             } else {
                 deleteFavouriteByBaseWordAndTranslationUseCase(
                     BaseWordAndTranslation(
-                        baseWord = currentInput,
+                        baseWord = currentInput.lowercase(),
                         translation = _mainScreenUiState.value.translateResult
                     )
                 )
