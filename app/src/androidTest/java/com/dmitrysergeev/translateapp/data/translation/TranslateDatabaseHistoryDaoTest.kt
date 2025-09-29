@@ -6,9 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dmitrysergeev.translateapp.data.translation.db.TranslateDatabase
 import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDao
+import com.dmitrysergeev.translateapp.data.translation.db.favourites.FavouriteDbEntity
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDao
 import com.dmitrysergeev.translateapp.data.translation.db.history.HistoryDbEntity
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -19,9 +19,8 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class TranslateDatabaseTest {
+class TranslateDatabaseHistoryDaoTest {
 
-    private lateinit var favouriteDao: FavouriteDao
     private lateinit var historyDao: HistoryDao
     private lateinit var db: TranslateDatabase
 
@@ -33,7 +32,6 @@ class TranslateDatabaseTest {
             TranslateDatabase::class.java
         ).build()
         historyDao = db.historyDao()
-        favouriteDao = db.favouriteDao()
     }
 
     @After
@@ -122,20 +120,15 @@ class TranslateDatabaseTest {
         assertEquals(0, historyItemsAfterDelete.size)
     }
 
-    fun getHistoryDbEntity1(): HistoryDbEntity = HistoryDbEntity(
+    private fun getHistoryDbEntity1(): HistoryDbEntity = HistoryDbEntity(
         0,
         "стол",
         "table"
     )
 
-    fun getHistoryDbEntity2(): HistoryDbEntity = HistoryDbEntity(
+    private fun getHistoryDbEntity2(): HistoryDbEntity = HistoryDbEntity(
         0,
         "волк",
         "wolf"
-    )
-    fun getHistoryDbEntity3(): HistoryDbEntity = HistoryDbEntity(
-        0,
-        "футбол",
-        "soccer"
     )
 }
