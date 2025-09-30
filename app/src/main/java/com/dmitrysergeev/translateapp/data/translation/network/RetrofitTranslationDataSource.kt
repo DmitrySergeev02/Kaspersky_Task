@@ -12,9 +12,11 @@ class RetrofitTranslationDataSource @Inject constructor(
     override fun getTranslations(query: String): Flow<List<WordTranslation>> {
         return flow {
             emit(
-                skyEngApi.getMeanings(query).map {
-                    item-> WordTranslation(id = item.id, originalWord = query, translation = item.text)
-                }
+                skyEngApi.getMeanings(query)
+                    .filter { it.meanings.isNotEmpty() }
+                    .map {
+                        item-> WordTranslation(id = item.id, originalWord = query, translation = item.meanings[0].translation.text)
+                    }
             )
         }
     }

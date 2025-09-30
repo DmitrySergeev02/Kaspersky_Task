@@ -118,7 +118,7 @@ class MainScreenViewModel @Inject constructor(
             }
         } else {
             _mainScreenUiState.value = MainScreenUiState(
-                snackbarTextId = R.string.network_error_not_russian
+                snackbarTextId = R.string.network_error_not_english
             )
         }
     }

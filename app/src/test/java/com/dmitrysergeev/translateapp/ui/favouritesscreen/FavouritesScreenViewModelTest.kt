@@ -27,9 +27,9 @@ class FavouritesScreenViewModelTest {
     lateinit var deleteFavouriteByBaseWordAndTranslationUseCase: DeleteFavouriteByBaseWordAndTranslationUseCase
 
     fun getMutableListOfWordTranslation(): MutableList<WordTranslation> =  mutableListOf(
-        WordTranslation(0,"собака", "dog"),
-        WordTranslation(0,"рука", "hand"),
-        WordTranslation(0,"мяч", "ball")
+        WordTranslation(0,"dog", "собака"),
+        WordTranslation(0,"hand", "рука"),
+        WordTranslation(0,"ball", "мяч")
     )
 
     @Test

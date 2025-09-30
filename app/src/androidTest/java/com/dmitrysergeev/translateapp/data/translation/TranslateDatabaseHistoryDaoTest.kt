@@ -120,13 +120,13 @@ class TranslateDatabaseHistoryDaoTest {
 
     private fun getHistoryDbEntity1(): HistoryDbEntity = HistoryDbEntity(
         0,
-        "стол",
-        "table"
+        "table",
+        "стол"
     )
 
     private fun getHistoryDbEntity2(): HistoryDbEntity = HistoryDbEntity(
         0,
-        "волк",
-        "wolf"
+        "wolf",
+        "волк"
     )
 }

@@ -58,8 +58,8 @@ class GetHistoryUseCaseImplTest {
     @Test
     fun invokeWhenHistoryItemsExists() = runTest{
         val expectedResult = listOf(
-            WordTranslation(0,"собака","dog"),
-            WordTranslation(1,"мяч","ball"),
+            WordTranslation(0,"dog","собака"),
+            WordTranslation(1,"ball","мяч"),
         )
         coEvery { translationRepository.getHistory() } returns flow {
             emit(expectedResult)

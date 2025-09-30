@@ -123,14 +123,14 @@ class TranslateDatabaseFavouriteDaoTest {
 
     fun getFavouriteDbEntity1(): FavouriteDbEntity = FavouriteDbEntity(
         0,
-        "стол",
-        "table"
+        "table",
+        "стол"
     )
 
     fun getFavouriteDbEntity2(): FavouriteDbEntity = FavouriteDbEntity(
         0,
-        "собака",
-        "dog"
+        "dog",
+        "собака"
     )
 
 
