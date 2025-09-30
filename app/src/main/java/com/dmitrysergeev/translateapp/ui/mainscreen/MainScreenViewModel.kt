@@ -41,6 +41,9 @@ class MainScreenViewModel @Inject constructor(
     private val _historyItemsState: MutableStateFlow<List<WordTranslation>> = MutableStateFlow(emptyList())
     val historyItemsState = _historyItemsState.asStateFlow()
 
+    private val _currentInputText: MutableStateFlow<String> = MutableStateFlow("")
+    val currentInputText = _currentInputText.asStateFlow()
+
     private var currentInput: String = ""
 
     init {
@@ -50,6 +53,10 @@ class MainScreenViewModel @Inject constructor(
                     _historyItemsState.value = historyItems.reversed()
                 }
         }
+    }
+
+    fun updateCurrentInputText(value: String){
+        _currentInputText.value = value
     }
 
     private var checkFavouriteJob: Job? = null

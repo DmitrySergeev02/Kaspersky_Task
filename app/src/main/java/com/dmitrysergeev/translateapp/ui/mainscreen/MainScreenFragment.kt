@@ -2,6 +2,8 @@ package com.dmitrysergeev.translateapp.ui.mainscreen
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -78,6 +80,19 @@ class MainScreenFragment: BaseFragment() {
             }
         }
 
+        binding.queryInput.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.updateCurrentInputText(p0.toString())
+            }
+
+        })
+
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = HistoryAdapter(
             onDelete = { historyItem ->
@@ -130,7 +145,7 @@ class MainScreenFragment: BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(QUERY_LAST_INPUT, binding.queryInput.text.toString())
+        outState.putString(QUERY_LAST_INPUT, viewModel.currentInputText.value)
     }
 
     override fun onResume() {
