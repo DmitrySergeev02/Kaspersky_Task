@@ -51,46 +51,32 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-
-    // Moshi
-    implementation("com.squareup.moshi:moshi:1.15.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
-
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Fragments
-    implementation("androidx.fragment:fragment-ktx:1.8.9")
+    implementation(libs.androidx.fragment.ktx)
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-    implementation("androidx.activity:activity-ktx:1.11.0")
-
-    // Room
-    implementation ("androidx.room:room-runtime:2.8.1")
-    implementation ("androidx.room:room-ktx:2.8.1")
-    kapt ("androidx.room:room-compiler:2.8.1")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.activity.ktx)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.57.1")
-    kapt("com.google.dagger:hilt-compiler:2.57.1")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation(libs.androidx.recyclerview)
 
     // Navigation Component
-    implementation ("androidx.navigation:navigation-ui-ktx:2.9.5")
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.9.5")
+    implementation (libs.androidx.navigation.ui.ktx)
+    implementation (libs.androidx.navigation.fragment.ktx)
 
     // MockK
-    testImplementation("io.mockk:mockk:1.14.5")
+    testImplementation(libs.mockk)
 
     // Coroutine test
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation(libs.kotlinx.coroutines.test)
 }
