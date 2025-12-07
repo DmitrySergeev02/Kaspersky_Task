@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_error_try_again_later">Во время запроса произошла ошибка, повторите попытку позже</string>
+    <string name="translation_page">Главная страница</string>
+    <string name="history_page">История</string>
+    <string name="navigation_drawer_header">Kaspersky</string>
+    <string name="navigation_drawer_subheader">Test app by Dmitry Sergeev</string>
+</resources>

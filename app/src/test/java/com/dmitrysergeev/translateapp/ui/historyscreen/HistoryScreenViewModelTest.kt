@@ -37,7 +37,7 @@ class HistoryScreenViewModelTest {
         val favourites = getMutableListOfWordTranslation()
         coEvery { getFavouriteTranslationsUseCase() } returns flowOf(favourites)
 
-        val viewModel = HistoryScreenViewModel(
+        val viewModel = com.dmitrysergeev.history.presentation.HistoryScreenViewModel(
             getFavouriteTranslationsUseCase,
             deleteFavouriteByBaseWordAndTranslationUseCase
         )
@@ -65,7 +65,7 @@ class HistoryScreenViewModelTest {
             current.remove(wordTranslationToDelete)
             favouritesFlow.value = current
         }
-        val viewModel = HistoryScreenViewModel(
+        val viewModel = com.dmitrysergeev.history.presentation.HistoryScreenViewModel(
             getFavouriteTranslationsUseCase,
             deleteFavouriteByBaseWordAndTranslationUseCase
         )

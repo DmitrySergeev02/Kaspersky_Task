@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id ("androidx.navigation.safeargs")
 }
 
 android {
@@ -51,24 +52,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Coroutines
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-
     // Fragments
     implementation(libs.androidx.fragment.ktx)
-
-    // ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.activity.ktx)
 
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    // RecyclerView
-    implementation(libs.androidx.recyclerview)
 
     // Navigation Component
     implementation (libs.androidx.navigation.ui.ktx)
@@ -81,4 +70,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(":data"))
+    implementation(project(":features:translation"))
+    implementation(project(":features:history"))
 }

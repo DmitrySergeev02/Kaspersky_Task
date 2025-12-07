@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favourites_page_title">Избранное</string>
+    <string name="network_error_no_translation">Для введённого слова не найден перевод</string>
+    <string name="check_favourites_error">Произошла ошибка с хранилищем истории переводов слов</string>
+    <string name="empty_favourites">История переводов пуста</string>
+    <string name="translate_item_base_word">Исходное слово: %1$s</string>
+    <string name="translate_item_translation">Перевод: %1$s</string>
+</resources>

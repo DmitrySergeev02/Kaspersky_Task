@@ -2,19 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainScreenFragment">
+    app:startDestination="@id/translationScreenFragment">
+
 
     <fragment
-        android:id="@+id/mainScreenFragment"
-        android:name="com.dmitrysergeev.translateapp.ui.mainscreen.MainScreenFragment"
-        android:label="MainScreenFragment" >
+        android:id="@+id/translationScreenFragment"
+        android:name="com.dmitrysergeev.translation.presentation.TranslationScreenFragment"
+        android:label="TranslationScreenFragment" >
         <action
-            android:id="@+id/to_favourites_screen"
-            app:destination="@id/favouritesScreenFragment" />
+            android:id="@+id/to_history"
+            app:destination="@id/historyScreenFragment" />
     </fragment>
     <fragment
-        android:id="@+id/favouritesScreenFragment"
-        android:name="com.dmitrysergeev.translateapp.ui.historyscreen.HistoryScreenFragment"
-        android:label="FavouritesScreenFragment" >
+        android:id="@+id/historyScreenFragment"
+        android:name="com.dmitrysergeev.history.presentation.HistoryScreenFragment"
+        android:label="HistoryScreenFragment" >
+        <action
+            android:id="@+id/to_translation"
+            app:destination="@id/translationScreenFragment" />
     </fragment>
 </navigation>

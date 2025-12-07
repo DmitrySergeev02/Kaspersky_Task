@@ -24,11 +24,12 @@ class GetHistoryUseCaseTest {
 
     val dispatcher = Dispatchers.Unconfined
 
-    lateinit var getHistoryUseCase: GetHistoryUseCase
+    lateinit var getHistoryUseCase: com.dmitrysergeev.history.domain.GetHistoryUseCase
 
     @Before
     fun setup(){
-        getHistoryUseCase = GetHistoryUseCase(translationRepository, dispatcher)
+        getHistoryUseCase =
+            com.dmitrysergeev.history.domain.GetHistoryUseCase(translationRepository, dispatcher)
     }
 
     @Test
