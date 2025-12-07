@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dmitrysergeev.history.databinding.TranslateItemBinding
 import com.dmitrysergeev.history.domain.entities.HistoryTranslation
 
-class HistoryAdapter(
-    private val onClick: (HistoryTranslation)->Unit
-): RecyclerView.Adapter<HistoryViewHolder>() {
+class HistoryAdapter: RecyclerView.Adapter<HistoryViewHolder>() {
 
     var favouritesItems: List<HistoryTranslation> = emptyList()
         set(newValue) {
@@ -32,6 +30,6 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val item = favouritesItems[position]
-        holder.onBind(item, onClick)
+        holder.onBind(item)
     }
 }

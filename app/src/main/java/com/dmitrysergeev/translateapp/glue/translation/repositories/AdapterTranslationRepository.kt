@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AdapterTranslationRepository @Inject constructor(
     private val translationDataRepository: TranslationDataRepository
-): com.dmitrysergeev.translation.domain.TranslationRepository {
-    override suspend fun getTranslation(fromLanguage: String, toLanguage: String, input: String): String
+): TranslationRepository {
+    override suspend fun getTranslation(fromLanguage: String, toLanguage: String, input: String): Result<String>
         = translationDataRepository.getTranslation(fromLanguage,toLanguage, input)
 }

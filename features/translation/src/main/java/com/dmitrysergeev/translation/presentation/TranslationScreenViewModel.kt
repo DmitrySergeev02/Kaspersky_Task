@@ -2,6 +2,7 @@ package com.dmitrysergeev.translation.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmitrysergeev.translation.R
 import com.dmitrysergeev.core.R as  R_base
 import com.dmitrysergeev.translation.domain.GetTranslationForQueryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,14 +45,19 @@ class TranslationScreenViewModel @Inject constructor(
         }
     }
 
-    fun translateText(){
+    fun translateText(fromLanguage: String, toLanguage: String){
         updateUiState(isLoading = true)
         viewModelScope.launch {
             try {
-                val translationResult = getTranslationForQueryUseCase("ru","en", _currentInput.value)
-                updateUiState(isLoading = false, translationResult = translationResult)
+                val translationResult = getTranslationForQueryUseCase(fromLanguage,toLanguage, _currentInput.value)
+                if (translationResult.isSuccess){
+                    updateUiState(isLoading = false, translationResult = translationResult.getOrThrow())
+                } else {
+                    updateUiState(isLoading = false, snackBarTextId = R.string.translation_not_found, translationResult = "")
+                }
+
             } catch (e: Exception){
-                updateUiState(isLoading = false, snackBarTextId = R_base.string.network_error_try_again_later)
+                updateUiState(isLoading = false, snackBarTextId = R_base.string.network_error_try_again_later, translationResult = "")
             }
 
         }

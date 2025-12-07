@@ -3,6 +3,7 @@ package com.dmitrysergeev.data.history.sources.db
 import com.dmitrysergeev.data.history.entities.WordTranslationDataEntity
 import com.dmitrysergeev.data.history.mapper.WordTranslationDataEntityMapper
 import com.dmitrysergeev.data.history.sources.HistoryDataSource
+import com.dmitrysergeev.data.history.sources.db.entities.IdToDelete
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class RoomHistoryDataSource @Inject constructor(
 
 
     override suspend fun deleteFromHistory(wordTranslationDataEntity: WordTranslationDataEntity) {
-        historyDao.deleteHistoryItem(mapper.toHistoryDbEntity(wordTranslationDataEntity))
+        historyDao.deleteHistoryItem(IdToDelete(wordTranslationDataEntity.id))
     }
 
 }

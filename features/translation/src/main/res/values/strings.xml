@@ -8,4 +8,7 @@
     <string name="word_translation_text_tools">Нога</string>
     <string name="query_input_hint">Введите слово для перевода</string>
     <string name="translation_label_text">Перевод:</string>
+    <string name="translation_not_found">Перевод для данного слова не найден</string>
+    <string name="target_language">To</string>
+    <string name="source_language">From</string>
 </resources>

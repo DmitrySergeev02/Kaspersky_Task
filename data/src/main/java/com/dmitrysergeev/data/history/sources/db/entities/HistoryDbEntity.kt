@@ -12,5 +12,6 @@ data class HistoryDbEntity(
     @ColumnInfo(name = "from_language") val fromLanguage: String,
     @ColumnInfo(name = "to_language") val toLanguage: String,
     val input: String,
-    val output: String
+    val output: String,
+    val timestamp: Long
 )

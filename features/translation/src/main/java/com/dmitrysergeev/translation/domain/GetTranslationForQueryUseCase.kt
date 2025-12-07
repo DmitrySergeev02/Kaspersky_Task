@@ -10,7 +10,7 @@ class GetTranslationForQueryUseCase @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(fromLanguage: String, toLanguage: String, input: String): String = withContext(dispatcher){
+    suspend operator fun invoke(fromLanguage: String, toLanguage: String, input: String): Result<String> = withContext(dispatcher){
         translationRepository.getTranslation(fromLanguage, toLanguage, input)
     }
 

@@ -50,7 +50,10 @@ class TranslationScreenFragment @Inject constructor(): BaseFragment() {
         baseBinding.appBar.title = getString(R.string.main_page_title)
 
         binding.textInputLayout.setEndIconOnClickListener {
-            viewModel.translateText()
+            viewModel.translateText(
+                fromLanguage = binding.menuFrom.text.toString(),
+                toLanguage = binding.menuTo.text.toString()
+            )
             hideKeyboard(binding.queryInput)
         }
 
@@ -76,7 +79,10 @@ class TranslationScreenFragment @Inject constructor(): BaseFragment() {
         binding.queryInput.setOnEditorActionListener { _, i, _ ->
             when(i){
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    viewModel.translateText()
+                    viewModel.translateText(
+                        fromLanguage = binding.menuFrom.text.toString(),
+                        toLanguage = binding.menuTo.text.toString()
+                    )
                     hideKeyboard(binding.queryInput)
                     true
                 }

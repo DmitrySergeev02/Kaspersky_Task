@@ -11,7 +11,8 @@ class WordTranslationDataEntityMapper @Inject constructor() {
             fromLanguage = wordTranslationDataEntity.fromLanguage,
             toLanguage = wordTranslationDataEntity.toLanguage,
             input = wordTranslationDataEntity.input,
-            output = wordTranslationDataEntity.output
+            output = wordTranslationDataEntity.output,
+            timestamp = System.currentTimeMillis()
         )
     }
 

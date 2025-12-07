@@ -1,6 +1,7 @@
 package com.dmitrysergeev.history.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dmitrysergeev.core.R as R_base
+import androidx.recyclerview.widget.RecyclerView
 import com.dmitrysergeev.core.base.BaseFragment
 import com.dmitrysergeev.history.HistoryRouter
 import com.dmitrysergeev.history.R
@@ -18,6 +20,7 @@ import com.dmitrysergeev.history.presentation.recyclerview.HistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.dmitrysergeev.core.R as R_base
 
 @AndroidEntryPoint
 class HistoryScreenFragment @Inject constructor(): BaseFragment() {
@@ -61,11 +64,26 @@ class HistoryScreenFragment @Inject constructor(): BaseFragment() {
             true
         }
 
-        binding.favouriteRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = HistoryAdapter { item ->
-            viewModel.deleteFromFavourites(item)
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = HistoryAdapter()
+        binding.historyRecyclerView.adapter = adapter
+
+        val swipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = adapter.favouritesItems[viewHolder.absoluteAdapterPosition]
+                viewModel.deleteFromFavourites(item)
+            }
         }
-        binding.favouriteRecyclerView.adapter = adapter
+        val itemTouchHelper = ItemTouchHelper(swipeCallback)
+        itemTouchHelper.attachToRecyclerView(binding.historyRecyclerView)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -79,7 +97,7 @@ class HistoryScreenFragment @Inject constructor(): BaseFragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.uiState.collect{ state->
                     binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-                    binding.favouriteRecyclerView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
+                    binding.historyRecyclerView.visibility = if (state.isLoading) View.GONE else View.VISIBLE
                     if (state.snackbarTextId!=-1){
                         showSnackBarWithText(getString(state.snackbarTextId))
                     }
