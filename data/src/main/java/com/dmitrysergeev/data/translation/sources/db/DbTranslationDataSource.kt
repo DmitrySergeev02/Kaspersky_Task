@@ -1,13 +1,13 @@
 package com.dmitrysergeev.data.translation.sources.db
 
 import com.dmitrysergeev.data.history.entities.WordTranslationDataEntity
-import com.dmitrysergeev.data.history.mapper.WordTranslationMapper
+import com.dmitrysergeev.data.history.mapper.WordTranslationDataEntityMapper
 import com.dmitrysergeev.data.translation.sources.MutableTranslationDataSource
 import javax.inject.Inject
 
 class DbTranslationDataSource @Inject constructor(
     private val translationDao: TranslationDao,
-    private val mapper: WordTranslationMapper
+    private val mapper: WordTranslationDataEntityMapper
 ): MutableTranslationDataSource {
     override suspend fun addToHistory(wordTranslationDataEntity: WordTranslationDataEntity) {
         translationDao.addToHistory(mapper.toHistoryDbEntity(wordTranslationDataEntity))

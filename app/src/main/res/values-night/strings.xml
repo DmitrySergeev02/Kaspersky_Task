@@ -15,6 +15,8 @@
     <string name="base_word_tools_text">Исходное слово: нога</string>
     <string name="translation_word_tools_text">Перевод: leg</string>
     <string name="word_translation_text_tools">Нога</string>
-    <string name="check_favourites_error">Произошла ошибка с хранилищем избранных слов</string>
-    <string name="empty_favourites">Список избранных переводов пуст</string>
+    <string name="check_favourites_error">Произошла ошибка с хранилищем истории переводов слов</string>
+    <string name="empty_favourites">История переводов пуста</string>
+    <string name="main_page">Главная страница</string>
+    <string name="favourite_page">История</string>
 </resources>

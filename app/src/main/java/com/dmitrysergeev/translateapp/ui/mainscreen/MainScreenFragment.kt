@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrysergeev.translateapp.R
 import com.dmitrysergeev.translateapp.databinding.FragmentMainScreenBinding
 import com.dmitrysergeev.translateapp.ui.base.BaseFragment
-import com.dmitrysergeev.translateapp.ui.mainscreen.recyclerview.HistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,7 +48,7 @@ class MainScreenFragment: BaseFragment() {
         baseBinding.appBar.title = getString(R.string.main_page_title)
 
         binding.textInputLayout.setEndIconOnClickListener {
-            viewModel.translateText(binding.queryInput.text.toString())
+            viewModel.translateText()
             hideKeyboard(binding.queryInput)
         }
 
@@ -69,43 +69,18 @@ class MainScreenFragment: BaseFragment() {
             true
         }
 
-        binding.queryInput.setOnEditorActionListener { textView, i, _ ->
+        binding.queryInput.addTextChangedListener(afterTextChanged = { text: Editable? ->
+            viewModel.updateInput(text.toString())
+        })
+
+        binding.queryInput.setOnEditorActionListener { _, i, _ ->
             when(i){
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    viewModel.translateText(binding.queryInput.text.toString())
+                    viewModel.translateText()
                     hideKeyboard(binding.queryInput)
                     true
                 }
                 else -> false
-            }
-        }
-
-        binding.queryInput.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.updateCurrentInputText(p0.toString())
-            }
-
-        })
-
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = HistoryAdapter(
-            onDelete = { historyItem ->
-                viewModel.deleteItemFromHistory(historyItem)
-            }
-        )
-        binding.historyRecyclerView.adapter = adapter
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.historyItemsState.collect{ historyItems->
-                    adapter.historyItems = historyItems
-                }
             }
         }
 
@@ -120,12 +95,7 @@ class MainScreenFragment: BaseFragment() {
                     }
 
                     binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-
                     binding.currentTranslationItem.visibility = if (state.translateResult.isBlank() || state.isLoading) View.GONE else View.VISIBLE
-                    binding.favouriteButton.setImageResource(if (state.isFavourite) R.drawable.like_icon else R.drawable.empty_like_icon)
-                    binding.favouriteButton.setOnClickListener {
-                        viewModel.changeFavouriteState(!state.isFavourite)
-                    }
                 }
             }
         }
@@ -145,7 +115,7 @@ class MainScreenFragment: BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(QUERY_LAST_INPUT, viewModel.currentInputText.value)
+        outState.putString(QUERY_LAST_INPUT, viewModel.currentInput.value)
     }
 
     override fun onResume() {

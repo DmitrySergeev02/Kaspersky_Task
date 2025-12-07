@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouritesScreenFragment"
-        android:name="com.dmitrysergeev.translateapp.ui.favouritesscreen.FavouritesScreenFragment"
+        android:name="com.dmitrysergeev.translateapp.ui.historyscreen.HistoryScreenFragment"
         android:label="FavouritesScreenFragment" >
     </fragment>
 </navigation>
